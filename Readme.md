@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Мария Усынина](https://up.htmlacademy.ru/ecmascript/20/user/2234317).
-* Наставник: `Неизвестно`.
+* Наставник: [Нияз Гарипов](https://htmlacademy.ru/profile/niyaz).
 
 ---
 
