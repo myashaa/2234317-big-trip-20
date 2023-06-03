@@ -11,7 +11,7 @@ import {
 
 const mockDestinations = [
   {
-    id: '1',
+    id: '0',
     description: getRandomArrayElement(DESTINATION_DESCRIPTION),
     name: 'Chamonix',
     pictures: [
@@ -22,7 +22,7 @@ const mockDestinations = [
     ]
   },
   {
-    id: '2',
+    id: '1',
     description: getRandomArrayElement(DESTINATION_DESCRIPTION),
     name: 'Geneva',
     pictures: [
@@ -37,7 +37,7 @@ const mockDestinations = [
     ]
   },
   {
-    id: '3',
+    id: '2',
     description: getRandomArrayElement(DESTINATION_DESCRIPTION),
     name: 'Amsterdam',
     pictures: [
@@ -53,4 +53,7 @@ function getRandomDestination() {
   return getRandomArrayElement(mockDestinations);
 }
 
-export {getRandomDestination};
+export {
+  getRandomDestination,
+  mockDestinations
+};

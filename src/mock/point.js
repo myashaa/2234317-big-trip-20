@@ -11,55 +11,50 @@ import {getRandomDestination} from './destination.js';
 
 const mockPoints = [
   {
-    id: '1',
+    id: '0',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
-    dateTo: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
+    dateFrom: '2023-01-03T13:45',
+    dateTo: '2023-01-03T14:55',
     destination: getRandomDestination().id,
-    isFavorite: true,
+    isFavorite: false,
     offers: [
-      '2',
-      '4'
+      '1',
+      '3',
+      '2'
     ],
     type: POINT_TYPE.TAXI
   },
   {
-    id: '2',
+    id: '1',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
-    dateTo: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
+    dateFrom: '2023-01-03T13:45',
+    dateTo: '2023-01-03T15:05',
     destination: getRandomDestination().id,
     isFavorite: true,
-    offers: [
-      '3',
-      '1'
-    ],
+    offers: ['2'],
     type: POINT_TYPE.RESTAURANT
   },
   {
-    id: '3',
+    id: '2',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
-    dateTo: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
+    dateFrom: '2023-01-03T13:45',
+    dateTo: '2023-01-03T15:15',
     destination: getRandomDestination().id,
-    isFavorite: true,
+    isFavorite: false,
     offers: [
-      '1',
-      '4'
+      '0',
+      '3'
     ],
     type: POINT_TYPE.SHIP
   },
   {
-    id: '4',
+    id: '3',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
-    dateTo: new Date(Date.parse('2023-01-03T13:45:55.845Z')),
+    dateFrom: '2023-01-03T13:45',
+    dateTo: '2023-01-03T14:25',
     destination: getRandomDestination().id,
-    isFavorite: true,
-    offers: [
-      '2',
-      '4'
-    ],
+    isFavorite: false,
+    offers: ['0'],
     type: POINT_TYPE.TRAIN
   }
 ];
