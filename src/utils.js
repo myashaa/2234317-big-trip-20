@@ -1,3 +1,8 @@
+import dayjs from 'dayjs';
+
+const DATE_FORMAT = 'MMM DD';
+const TIME_FORMAT = 'HH:mm';
+
 function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
@@ -10,7 +15,14 @@ function getRandomInteger(a, b) {
   return Math.floor(result);
 }
 
+function humanizeDate(date, format) {
+  return date ? dayjs(date).format(format) : '';
+}
+
 export {
+  DATE_FORMAT,
+  TIME_FORMAT,
   getRandomArrayElement,
-  getRandomInteger
+  getRandomInteger,
+  humanizeDate
 };
