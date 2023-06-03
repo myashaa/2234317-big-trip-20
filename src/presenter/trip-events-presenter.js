@@ -20,9 +20,15 @@ export default class TripEventsPresenter {
 
     render(new SortView(), this.tripContainer);
     render(this.listComponent, this.tripContainer);
+
     //render(new CreationFormView(), this.listComponent.getElement());
-    render(new EditFormView(), this.listComponent.getElement());
-    for (let i = 0; i < this.points.length; i++) {
+    render(new EditFormView({
+      point: this.points[0],
+      offers: this.offers,
+      destinations: this.destinations
+    }), this.listComponent.getElement());
+
+    for (let i = 1; i < this.points.length; i++) {
       render(new TripPointView({
         point: this.points[i],
         offers: this.offers,

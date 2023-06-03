@@ -18,6 +18,18 @@ const mockDestinations = [
       {
         src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
         description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
       }
     ]
   },
@@ -33,6 +45,18 @@ const mockDestinations = [
       {
         src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
         description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
       }
     ]
   },
@@ -41,6 +65,14 @@ const mockDestinations = [
     description: getRandomArrayElement(DESTINATION_DESCRIPTION),
     name: 'Amsterdam',
     pictures: [
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
+      {
+        src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
+        description: getRandomArrayElement(DESTINATION_DESCRIPTION)
+      },
       {
         src: `${DESTINATION_PHOTO_URL}${getRandomInteger(MIN_INDEX_OF_DESTINATION_PHOTO, MAX_INDEX_OF_DESTINATION_PHOTO)}`,
         description: getRandomArrayElement(DESTINATION_DESCRIPTION)

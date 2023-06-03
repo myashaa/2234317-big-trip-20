@@ -3,6 +3,7 @@ import duration from 'dayjs/plugin/duration';
 
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
+const DATE_TIME_FORMAT = 'DD/MM/YY HH:mm';
 const TIME_IN_MIN = 'mm[m]';
 const TIME_IN_HOUR_MIN = 'HH[h] mm[m]';
 const TIME_IN_DAY_HOUR_MIN = 'DD[d] HH[h] mm[m]';
@@ -22,11 +23,11 @@ function getRandomInteger(a, b) {
   return Math.floor(result);
 }
 
-function humanizeDate(date, format) {
+function humanizeDate (date, format) {
   return date ? dayjs(date).format(format) : '';
 }
 
-function getDuration(dateFrom, dateTo) {
+function getDuration (dateFrom, dateTo) {
   const difference = dayjs(dateTo).diff(dateFrom);
   const differenceInMs = dayjs.extend(duration).duration(difference).$ms;
   let format = TIME_IN_MIN;
@@ -40,11 +41,17 @@ function getDuration(dateFrom, dateTo) {
   return dayjs.duration(difference).format(format);
 }
 
+function insertDashIntoStr (str) {
+  return str.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, '').replace(/\s/g, '-');
+}
+
 export {
   DATE_FORMAT,
   TIME_FORMAT,
+  DATE_TIME_FORMAT,
   getRandomArrayElement,
   getRandomInteger,
   humanizeDate,
-  getDuration
+  getDuration,
+  insertDashIntoStr
 };

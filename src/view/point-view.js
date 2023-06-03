@@ -11,19 +11,19 @@ function getDestination (allDestinations, pointDestination) {
   return choosenDestination.name;
 }
 
-function getOffers(allOffers, pointOffers, pointType) {
+function getOffers (allOffers, pointOffers, pointType) {
   const pointTypeOffers = allOffers.find((item) => item.type === pointType).offers;
   const choosenOffers = pointTypeOffers.filter((item) => pointOffers.includes(item.id));
   return choosenOffers;
 }
 
 function createTripPointOfferTemplate (allOffers, pointOffers, pointType) {
-  return getOffers(allOffers, pointOffers, pointType).map((offer) =>`
-  <li class="event__offer">
-    <span class="event__offer-title">${offer.title}</span>
-    &plus;&euro;&nbsp;
-    <span class="event__offer-price">${offer.price}</span>
-  </li>
+  return getOffers(allOffers, pointOffers, pointType).map((offer) => `
+    <li class="event__offer">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+    </li>
   `).join('');
 }
 
