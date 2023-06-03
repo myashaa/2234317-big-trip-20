@@ -38,7 +38,7 @@ const mockPoints = [
     id: '2',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
     dateFrom: '2023-01-03T13:45',
-    dateTo: '2023-01-03T15:15',
+    dateTo: '2023-01-04T15:15',
     destination: getRandomDestination().id,
     isFavorite: false,
     offers: [
@@ -50,8 +50,8 @@ const mockPoints = [
   {
     id: '3',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-03T13:45',
-    dateTo: '2023-01-03T14:25',
+    dateFrom: '2023-01-04T13:45',
+    dateTo: '2023-01-04T14:25',
     destination: getRandomDestination().id,
     isFavorite: false,
     offers: ['0'],

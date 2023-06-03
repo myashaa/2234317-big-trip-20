@@ -2,7 +2,8 @@ import {createElement} from '../render.js';
 import {
   DATE_FORMAT,
   TIME_FORMAT,
-  humanizeDate
+  humanizeDate,
+  getDuration
 } from '../utils.js';
 
 function getDestination (allDestinations, pointDestination) {
@@ -32,6 +33,7 @@ function createTripPointTemplate (point, allOffers, allDestinations) {
   const date = humanizeDate(dateFrom, DATE_FORMAT);
   const timeFrom = humanizeDate(dateFrom, TIME_FORMAT);
   const timeTo = humanizeDate(dateTo, TIME_FORMAT);
+  const duration = getDuration(dateFrom, dateTo);
 
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
 
@@ -49,7 +51,7 @@ function createTripPointTemplate (point, allOffers, allDestinations) {
             &mdash;
             <time class="event__end-time" datetime=${dateTo}>${timeTo}</time>
           </p>
-          <p class="event__duration">30M</p>
+          <p class="event__duration">${duration}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
