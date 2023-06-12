@@ -29,10 +29,28 @@ function getDuration (dateFrom, dateTo) {
   return dayjs.duration(difference).format(format);
 }
 
+function isDateInFuture (date) {
+  return dayjs().isBefore(date, 'D');
+}
+
+function isDateInPresent(dateFrom, dateTo) {
+  const isDateFromSameOrInPast = dayjs().isSameOrAfter(dayjs(dateFrom), 'D');
+  const isDateToSameOrInFuture = dayjs().isSameOrBefore(dayjs(dateTo), 'D');
+
+  return isDateFromSameOrInPast && isDateToSameOrInFuture;
+}
+
+function isDateInPast (date) {
+  return dayjs().isAfter(date, 'D');
+}
+
 export {
   DATE_FORMAT,
   TIME_FORMAT,
   DATE_TIME_FORMAT,
   humanizeDate,
-  getDuration
+  getDuration,
+  isDateInFuture,
+  isDateInPresent,
+  isDateInPast
 };
