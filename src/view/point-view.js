@@ -3,7 +3,7 @@ import {
   TIME_FORMAT,
   humanizeDate,
   getDuration
-} from '../utils.js';
+} from '../utils/date.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 function getDestination (allDestinations, pointDestination) {

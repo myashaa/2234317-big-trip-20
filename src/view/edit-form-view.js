@@ -1,9 +1,9 @@
 import {POINT_TYPE} from '../const.js';
 import {
   DATE_TIME_FORMAT,
-  humanizeDate,
-  insertDashIntoStr
-} from '../utils.js';
+  humanizeDate
+} from '../utils/date.js';
+import {insertDashIntoStr} from '../utils/common.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 function getDestination (allDestinations, pointDestination) {

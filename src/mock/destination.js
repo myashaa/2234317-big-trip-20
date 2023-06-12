@@ -7,7 +7,7 @@ import {
 import {
   getRandomInteger,
   getRandomArrayElement
-} from '../utils.js';
+} from '../utils/common.js';
 
 const mockDestinations = [
   {
