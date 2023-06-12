@@ -6,34 +6,41 @@ import TripPointView from '../view/point-view.js';
 import {render} from '../framework/render.js';
 
 export default class TripEventsPresenter {
-  listComponent = new ListView();
+  #tripContainer = null;
+  #pointsModel = null;
+
+  #points = [];
+  #offers = [];
+  #destinations = [];
+
+  #listComponent = new ListView();
 
   constructor({tripContainer, pointsModel}) {
-    this.tripContainer = tripContainer;
-    this.pointsModel = pointsModel;
+    this.#tripContainer = tripContainer;
+    this.#pointsModel = pointsModel;
   }
 
   init() {
-    this.points = [...this.pointsModel.getPoints()];
-    this.offers = [...this.pointsModel.getOffers()];
-    this.destinations = [...this.pointsModel.getDestinations()];
+    this.#points = [...this.#pointsModel.points];
+    this.#offers = [...this.#pointsModel.offers];
+    this.#destinations = [...this.#pointsModel.destinations];
 
-    render(new SortView(), this.tripContainer);
-    render(this.listComponent, this.tripContainer);
+    render(new SortView(), this.#tripContainer);
+    render(this.#listComponent, this.#tripContainer);
 
-    //render(new CreationFormView(), this.listComponent.element);
+    //render(new CreationFormView(), this.#listComponent.element);
     render(new EditFormView({
-      point: this.points[0],
-      offers: this.offers,
-      destinations: this.destinations
-    }), this.listComponent.element);
+      point: this.#points[0],
+      offers: this.#offers,
+      destinations: this.#destinations
+    }), this.#listComponent.element);
 
-    for (let i = 1; i < this.points.length; i++) {
+    for (let i = 1; i < this.#points.length; i++) {
       render(new TripPointView({
-        point: this.points[i],
-        offers: this.offers,
-        destinations: this.destinations
-      }), this.listComponent.element);
+        point: this.#points[i],
+        offers: this.#offers,
+        destinations: this.#destinations
+      }), this.#listComponent.element);
     }
   }
 }
