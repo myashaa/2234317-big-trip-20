@@ -1,3 +1,5 @@
+const POINT_COUNT = 5;
+
 const MIN_OFFER_PRICE = 10;
 const MAX_OFFER_PRICE = 200;
 
@@ -34,14 +36,23 @@ const DESTINATION_DESCRIPTION = [
   'In rutrum ac purus sit amet tempus.'
 ];
 
+const FILTER_TYPE = {
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PRESENT: 'Present',
+  PAST: 'Past',
+};
+
 export {
   DESTINATION_DESCRIPTION,
   DESTINATION_PHOTO_URL,
+  FILTER_TYPE,
   MIN_OFFER_PRICE,
   MIN_INDEX_OF_DESTINATION_PHOTO,
   MIN_POINT_PRICE,
   MAX_OFFER_PRICE,
   MAX_INDEX_OF_DESTINATION_PHOTO,
   MAX_POINT_PRICE,
+  POINT_COUNT,
   POINT_TYPE
 };

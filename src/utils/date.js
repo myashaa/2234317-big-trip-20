@@ -1,5 +1,11 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+
+dayjs.extend(duration);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
@@ -17,7 +23,7 @@ function humanizeDate (date, format) {
 
 function getDuration (dateFrom, dateTo) {
   const difference = dayjs(dateTo).diff(dateFrom);
-  const differenceInMs = dayjs.extend(duration).duration(difference).$ms;
+  const differenceInMs = dayjs.duration(difference).$ms;
   let format = TIME_IN_MIN;
 
   if (differenceInMs >= COUNT_OF_MS_IN_DAY) {
@@ -29,10 +35,28 @@ function getDuration (dateFrom, dateTo) {
   return dayjs.duration(difference).format(format);
 }
 
+function isDateInFuture (date) {
+  return dayjs().isBefore(date, 'D');
+}
+
+function isDateInPresent(dateFrom, dateTo) {
+  const isDateFromSameOrInPast = dayjs().isSameOrAfter(dayjs(dateFrom), 'D');
+  const isDateToSameOrInFuture = dayjs().isSameOrBefore(dayjs(dateTo), 'D');
+
+  return isDateFromSameOrInPast && isDateToSameOrInFuture;
+}
+
+function isDateInPast (date) {
+  return dayjs().isAfter(date, 'D');
+}
+
 export {
   DATE_FORMAT,
   TIME_FORMAT,
   DATE_TIME_FORMAT,
   humanizeDate,
-  getDuration
+  getDuration,
+  isDateInFuture,
+  isDateInPresent,
+  isDateInPast
 };
