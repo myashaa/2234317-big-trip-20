@@ -3,7 +3,7 @@ import FiltersView from './view/filters-view.js';
 import {
   RenderPosition,
   render
-} from './render.js';
+} from './framework/render.js';
 import TripEventsPresenter from './presenter/trip-events-presenter.js';
 import PointsModel from './model/points-model.js';
 

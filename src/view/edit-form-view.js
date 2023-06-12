@@ -4,7 +4,7 @@ import {
   humanizeDate,
   insertDashIntoStr
 } from '../utils.js';
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function getDestination (allDestinations, pointDestination) {
   return allDestinations.find((item) => pointDestination.includes(item.id));
@@ -141,26 +141,19 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
   `);
 }
 
-export default class EditFormView {
-  constructor({point, offers, destinations}) {
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+export default class EditFormView extends AbstractView {
+  #point = null;
+  #offers = null;
+  #destinations = null;
+
+  constructor({ point, offers, destinations }) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
-  getTemplate() {
-    return createEditFormTemplate(this.point, this.offers, this.destinations);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createEditFormTemplate(this.#point, this.#offers, this.#destinations);
   }
 }
