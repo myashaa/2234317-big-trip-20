@@ -3,7 +3,10 @@ import EditFormView from '../view/edit-form-view.js';
 import SortView from '../view/sort-view.js';
 import ListView from '../view/list-view.js';
 import TripPointView from '../view/point-view.js';
-import {render} from '../framework/render.js';
+import {
+  render,
+  replace
+} from '../framework/render.js';
 
 export default class TripEventsPresenter {
   #tripContainer = null;
@@ -29,23 +32,50 @@ export default class TripEventsPresenter {
     render(this.#listComponent, this.#tripContainer);
 
     //render(new CreationFormView(), this.#listComponent.element);
-    render(new EditFormView({
-      point: this.#points[0],
-      offers: this.#offers,
-      destinations: this.#destinations
-    }), this.#listComponent.element);
 
-    for (let i = 1; i < this.#points.length; i++) {
+    for (let i = 0; i < this.#points.length; i++) {
       this.#renderPoint(this.#points[i], this.#offers, this.#destinations);
     }
   }
 
   #renderPoint(point, offers, destinations) {
+    const escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
     const pointComponent = new TripPointView({
       point: point,
       offers: offers,
-      destinations: destinations
+      destinations: destinations,
+      onEditClick: () => {
+        replacePointToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
     });
+    const pointEditComponent = new EditFormView({
+      point: point,
+      offers: offers,
+      destinations: destinations,
+      onFormSubmit: () => {
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
+      onRollUpClick: () => {
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    function replacePointToForm() {
+      replace(pointEditComponent, pointComponent);
+    }
+
+    function replaceFormToPoint() {
+      replace(pointComponent, pointEditComponent);
+    }
 
     render(pointComponent, this.#listComponent.element);
   }
