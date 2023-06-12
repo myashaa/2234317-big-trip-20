@@ -1,10 +1,10 @@
 import {POINT_TYPE} from '../const.js';
 import {
   DATE_TIME_FORMAT,
-  humanizeDate,
-  insertDashIntoStr
-} from '../utils.js';
-import {createElement} from '../render.js';
+  humanizeDate
+} from '../utils/date.js';
+import {insertDashIntoStr} from '../utils/common.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function getDestination (allDestinations, pointDestination) {
   return allDestinations.find((item) => pointDestination.includes(item.id));
@@ -141,26 +141,38 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
   `);
 }
 
-export default class EditFormView {
-  constructor({point, offers, destinations}) {
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+export default class EditFormView extends AbstractView {
+  #point = null;
+  #offers = null;
+  #destinations = null;
+  #handleFormSubmit = null;
+  #handleRollUpClick = null;
+
+  constructor({ point, offers, destinations, onFormSubmit, onRollUpClick }) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleRollUpClick = onRollUpClick;
+
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#rollUpClickHandler);
   }
 
-  getTemplate() {
-    return createEditFormTemplate(this.point, this.offers, this.destinations);
+  get template() {
+    return createEditFormTemplate(this.#point, this.#offers, this.#destinations);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #rollUpClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleRollUpClick();
+  };
 }

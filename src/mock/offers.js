@@ -3,7 +3,7 @@ import {
   MIN_OFFER_PRICE,
   MAX_OFFER_PRICE
 } from '../const.js';
-import {getRandomInteger} from '../utils.js';
+import {getRandomInteger} from '../utils/common.js';
 
 const mockOffers = [
   {
