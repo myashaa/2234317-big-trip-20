@@ -36,11 +36,17 @@ export default class TripEventsPresenter {
     }), this.#listComponent.element);
 
     for (let i = 1; i < this.#points.length; i++) {
-      render(new TripPointView({
-        point: this.#points[i],
-        offers: this.#offers,
-        destinations: this.#destinations
-      }), this.#listComponent.element);
+      this.#renderPoint(this.#points[i], this.#offers, this.#destinations);
     }
+  }
+
+  #renderPoint(point, offers, destinations) {
+    const pointComponent = new TripPointView({
+      point: point,
+      offers: offers,
+      destinations: destinations
+    });
+
+    render(pointComponent, this.#listComponent.element);
   }
 }
