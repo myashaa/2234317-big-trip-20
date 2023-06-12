@@ -3,6 +3,7 @@ import EditFormView from '../view/edit-form-view.js';
 import SortView from '../view/sort-view.js';
 import ListView from '../view/list-view.js';
 import TripPointView from '../view/point-view.js';
+import NoTripPointView from '../view/no-point-view.js';
 import {
   render,
   replace
@@ -28,7 +29,11 @@ export default class TripEventsPresenter {
     this.#offers = [...this.#pointsModel.offers];
     this.#destinations = [...this.#pointsModel.destinations];
 
-    this.#renderRouteSheet();
+    if (this.#points.length === 0) {
+      render(new NoTripPointView(), this.#tripContainer);
+    } else {
+      this.#renderRouteSheet();
+    }
   }
 
   #renderPoint(point, offers, destinations) {
