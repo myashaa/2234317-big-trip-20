@@ -48,6 +48,12 @@ const MODE = {
   EDITING: 'EDITING',
 };
 
+const SORT_TYPE = {
+  DAY: 'Day',
+  TIME: 'Time',
+  PRICE: 'Price',
+};
+
 export {
   DESTINATION_DESCRIPTION,
   DESTINATION_PHOTO_URL,
@@ -60,5 +66,6 @@ export {
   MAX_POINT_PRICE,
   MODE,
   POINT_COUNT,
-  POINT_TYPE
+  POINT_TYPE,
+  SORT_TYPE
 };
