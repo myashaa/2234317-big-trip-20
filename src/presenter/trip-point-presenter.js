@@ -8,6 +8,7 @@ import {
 
 export default class TripPointPresenter {
   #pointContainer = null;
+  #handleDataChange = null;
 
   #point = null;
   #offers = [];
@@ -16,14 +17,15 @@ export default class TripPointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
 
-  constructor({pointContainer}) {
+  constructor({pointContainer, offers, destinations, onDataChange}) {
     this.#pointContainer = pointContainer;
-  }
-
-  init(point, offers, destinations) {
-    this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#handleDataChange = onDataChange;
+  }
+
+  init(point) {
+    this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
@@ -33,6 +35,7 @@ export default class TripPointPresenter {
       offers: this.#offers,
       destinations: this.#destinations,
       onEditClick: this.#handleEditClick,
+      onFavoriteClick: this.#handleFavoriteClick,
     });
     this.#pointEditComponent = new EditFormView({
       point: this.#point,
@@ -85,11 +88,16 @@ export default class TripPointPresenter {
     this.#replacePointToForm();
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
     this.#replaceFormToPoint();
   };
 
   #handleRollUpClick = () => {
     this.#replaceFormToPoint();
+  };
+
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
 }
