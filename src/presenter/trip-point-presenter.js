@@ -2,7 +2,8 @@ import TripPointView from '../view/point-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import {
   render,
-  replace
+  replace,
+  remove
 } from '../framework/render.js';
 
 export default class TripPointPresenter {
@@ -24,6 +25,9 @@ export default class TripPointPresenter {
     this.#offers = offers;
     this.#destinations = destinations;
 
+    const prevPointComponent = this.#pointComponent;
+    const prevPointEditComponent = this.#pointEditComponent;
+
     this.#pointComponent = new TripPointView({
       point: this.#point,
       offers: this.#offers,
@@ -38,7 +42,26 @@ export default class TripPointPresenter {
       onRollUpClick: this.#handleRollUpClick,
     });
 
-    render(this.#pointComponent, this.#pointContainer);
+    if (prevPointComponent === null || prevPointEditComponent === null) {
+      render(this.#pointComponent, this.#pointContainer);
+      return;
+    }
+
+    if (this.#pointContainer.contains(prevPointComponent.element)) {
+      replace(this.#pointComponent, prevPointComponent);
+    }
+
+    if (this.#pointContainer.contains(prevPointEditComponent.element)) {
+      replace(this.#pointEditComponent, prevPointEditComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevPointEditComponent);
+  }
+
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
   }
 
   #replacePointToForm() {
