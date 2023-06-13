@@ -12,6 +12,7 @@ export default class TripEventsPresenter {
   #points = [];
   #offers = [];
   #destinations = [];
+  #pointPresenters = new Map();
 
   #listComponent = new ListView();
   #sortComponent = new SortView();
@@ -57,6 +58,11 @@ export default class TripEventsPresenter {
     }
   }
 
+  #clearPoints() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
   #renderNoPoint() {
     render(this.#noPointComponent, this.#tripContainer);
   }
@@ -66,5 +72,6 @@ export default class TripEventsPresenter {
       pointContainer: this.#listComponent.element,
     });
     pointPresenter.init(point, offers, destinations);
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 }
