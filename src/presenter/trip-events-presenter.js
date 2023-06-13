@@ -18,6 +18,8 @@ export default class TripEventsPresenter {
   #destinations = [];
 
   #listComponent = new ListView();
+  #sortComponent = new SortView();
+  #noPointComponent = new NoTripPointView();
 
   constructor({tripContainer, pointsModel}) {
     this.#tripContainer = tripContainer;
@@ -30,10 +32,37 @@ export default class TripEventsPresenter {
     this.#destinations = [...this.#pointsModel.destinations];
 
     if (this.#points.length === 0) {
-      render(new NoTripPointView(), this.#tripContainer);
+      this.#renderNoPoint();
     } else {
       this.#renderRouteSheet();
     }
+  }
+
+  #renderRouteSheet() {
+    this.#renderSort();
+    this.#renderList();
+
+    //render(new CreationFormView(), this.#listComponent.element);
+
+    this.#renderPoints(this.#points, this.#offers, this.#destinations);
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#tripContainer);
+  }
+
+  #renderList() {
+    render(this.#listComponent, this.#tripContainer);
+  }
+
+  #renderPoints(points, offers, destinations) {
+    for (let i = 0; i < points.length; i++) {
+      this.#renderPoint(points[i], offers, destinations);
+    }
+  }
+
+  #renderNoPoint() {
+    render(this.#noPointComponent, this.#tripContainer);
   }
 
   #renderPoint(point, offers, destinations) {
@@ -76,16 +105,5 @@ export default class TripEventsPresenter {
     }
 
     render(pointComponent, this.#listComponent.element);
-  }
-
-  #renderRouteSheet() {
-    render(new SortView(), this.#tripContainer);
-    render(this.#listComponent, this.#tripContainer);
-
-    //render(new CreationFormView(), this.#listComponent.element);
-
-    for (let i = 0; i < this.#points.length; i++) {
-      this.#renderPoint(this.#points[i], this.#offers, this.#destinations);
-    }
   }
 }
