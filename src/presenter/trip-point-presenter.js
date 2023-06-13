@@ -5,23 +5,27 @@ import {
   replace,
   remove
 } from '../framework/render.js';
+import {MODE} from '../const.js';
 
 export default class TripPointPresenter {
   #pointContainer = null;
   #handleDataChange = null;
+  #handleModeChange = null;
 
   #point = null;
   #offers = [];
   #destinations = [];
+  #mode = MODE.DEFAULT;
 
   #pointComponent = null;
   #pointEditComponent = null;
 
-  constructor({pointContainer, offers, destinations, onDataChange}) {
+  constructor({pointContainer, offers, destinations, onDataChange, onModeChange}) {
     this.#pointContainer = pointContainer;
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
   }
 
   init(point) {
@@ -50,11 +54,11 @@ export default class TripPointPresenter {
       return;
     }
 
-    if (this.#pointContainer.contains(prevPointComponent.element)) {
+    if (this.#mode === MODE.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this.#pointContainer.contains(prevPointEditComponent.element)) {
+    if (this.#mode === MODE.EDITING) {
       replace(this.#pointEditComponent, prevPointEditComponent);
     }
 
@@ -67,14 +71,23 @@ export default class TripPointPresenter {
     remove(this.#pointEditComponent);
   }
 
+  resetView() {
+    if (this.#mode !== MODE.DEFAULT) {
+      this.#replaceFormToPoint();
+    }
+  }
+
   #replacePointToForm() {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleModeChange();
+    this.#mode = MODE.EDITING;
   }
 
   #replaceFormToPoint() {
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = MODE.DEFAULT;
   }
 
   #escKeyDownHandler = (evt) => {
