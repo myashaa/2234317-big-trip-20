@@ -4,6 +4,7 @@ import ListView from '../view/list-view.js';
 import NoTripPointView from '../view/no-point-view.js';
 import {render} from '../framework/render.js';
 import TripPointPresenter from './trip-point-presenter.js';
+import {updateItem} from '../utils/common.js';
 
 export default class TripEventsPresenter {
   #tripContainer = null;
@@ -74,4 +75,9 @@ export default class TripEventsPresenter {
     pointPresenter.init(point, offers, destinations);
     this.#pointPresenters.set(point.id, pointPresenter);
   }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
 }
