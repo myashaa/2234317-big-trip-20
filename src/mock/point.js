@@ -1,3 +1,4 @@
+import {nanoid} from 'nanoid';
 import {
   MIN_POINT_PRICE,
   MAX_POINT_PRICE,
@@ -11,7 +12,6 @@ import {getRandomDestination} from './destination.js';
 
 const mockPoints = [
   {
-    id: '0',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
     dateFrom: '2023-01-03T13:45',
     dateTo: '2023-01-03T14:55',
@@ -25,7 +25,6 @@ const mockPoints = [
     type: POINT_TYPE.TAXI
   },
   {
-    id: '1',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
     dateFrom: '2023-01-03T13:45',
     dateTo: '2023-01-03T15:05',
@@ -35,7 +34,6 @@ const mockPoints = [
     type: POINT_TYPE.RESTAURANT
   },
   {
-    id: '2',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
     dateFrom: '2023-01-03T13:45',
     dateTo: '2023-01-04T15:15',
@@ -48,7 +46,6 @@ const mockPoints = [
     type: POINT_TYPE.SHIP
   },
   {
-    id: '3',
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
     dateFrom: '2023-01-04T13:45',
     dateTo: '2023-01-04T14:25',
@@ -60,7 +57,10 @@ const mockPoints = [
 ];
 
 function getRandomPoint() {
-  return getRandomArrayElement(mockPoints);
+  return {
+    id: nanoid(),
+    ...getRandomArrayElement(mockPoints)
+  };
 }
 
 export {getRandomPoint};

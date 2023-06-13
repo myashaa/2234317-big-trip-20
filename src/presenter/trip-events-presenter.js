@@ -1,13 +1,10 @@
 //import CreationFormView from '../view/creation-form-view.js';
-import EditFormView from '../view/edit-form-view.js';
 import SortView from '../view/sort-view.js';
 import ListView from '../view/list-view.js';
-import TripPointView from '../view/point-view.js';
 import NoTripPointView from '../view/no-point-view.js';
-import {
-  render,
-  replace
-} from '../framework/render.js';
+import {render} from '../framework/render.js';
+import TripPointPresenter from './trip-point-presenter.js';
+import {updateItem} from '../utils/common.js';
 
 export default class TripEventsPresenter {
   #tripContainer = null;
@@ -16,8 +13,11 @@ export default class TripEventsPresenter {
   #points = [];
   #offers = [];
   #destinations = [];
+  #pointPresenters = new Map();
 
   #listComponent = new ListView();
+  #sortComponent = new SortView();
+  #noPointComponent = new NoTripPointView();
 
   constructor({tripContainer, pointsModel}) {
     this.#tripContainer = tripContainer;
@@ -30,62 +30,62 @@ export default class TripEventsPresenter {
     this.#destinations = [...this.#pointsModel.destinations];
 
     if (this.#points.length === 0) {
-      render(new NoTripPointView(), this.#tripContainer);
+      this.#renderNoPoint();
     } else {
       this.#renderRouteSheet();
     }
   }
 
-  #renderPoint(point, offers, destinations) {
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-    const pointComponent = new TripPointView({
-      point: point,
-      offers: offers,
-      destinations: destinations,
-      onEditClick: () => {
-        replacePointToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
-    });
-    const pointEditComponent = new EditFormView({
-      point: point,
-      offers: offers,
-      destinations: destinations,
-      onFormSubmit: () => {
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      },
-      onRollUpClick: () => {
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    });
-
-    function replacePointToForm() {
-      replace(pointEditComponent, pointComponent);
-    }
-
-    function replaceFormToPoint() {
-      replace(pointComponent, pointEditComponent);
-    }
-
-    render(pointComponent, this.#listComponent.element);
-  }
-
   #renderRouteSheet() {
-    render(new SortView(), this.#tripContainer);
-    render(this.#listComponent, this.#tripContainer);
+    this.#renderSort();
+    this.#renderList();
 
     //render(new CreationFormView(), this.#listComponent.element);
 
-    for (let i = 0; i < this.#points.length; i++) {
-      this.#renderPoint(this.#points[i], this.#offers, this.#destinations);
+    this.#renderPoints(this.#points, this.#offers, this.#destinations);
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#tripContainer);
+  }
+
+  #renderList() {
+    render(this.#listComponent, this.#tripContainer);
+  }
+
+  #renderPoints(points, offers, destinations) {
+    for (let i = 0; i < points.length; i++) {
+      this.#renderPoint(points[i], offers, destinations);
     }
   }
+
+  #clearPoints() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
+  #renderNoPoint() {
+    render(this.#noPointComponent, this.#tripContainer);
+  }
+
+  #renderPoint(point, offers, destinations) {
+    const pointPresenter = new TripPointPresenter({
+      pointContainer: this.#listComponent.element,
+      offers: offers,
+      destinations: destinations,
+      onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange,
+    });
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
 }
