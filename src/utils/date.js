@@ -50,6 +50,17 @@ function isDateInPast (date) {
   return dayjs().isAfter(date, 'D');
 }
 
+function getDateDifference (pointA, pointB) {
+  return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+}
+
+function getTimeDifference (pointA, pointB) {
+  const pointAdifference = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const pointBdifference = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+
+  return pointBdifference - pointAdifference;
+}
+
 export {
   DATE_FORMAT,
   TIME_FORMAT,
@@ -58,5 +69,7 @@ export {
   getDuration,
   isDateInFuture,
   isDateInPresent,
-  isDateInPast
+  isDateInPast,
+  getTimeDifference,
+  getDateDifference
 };
