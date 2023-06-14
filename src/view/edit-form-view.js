@@ -14,21 +14,37 @@ function getOffers (allOffers, pointType) {
   return allOffers.find((item) => item.type === pointType).offers;
 }
 
-function createEditFormOfferTemplate (allOffers, pointOffers, pointType) {
-  return getOffers(allOffers, pointType).map((offer) => {
-    const checked = pointOffers.includes(offer.id) ? 'checked' : '';
+function createEditFormOfferTemplate(pointOffers, offer) {
+  const {id, title, price} = offer;
+  const checked = pointOffers.includes(id) ? 'checked' : '';
 
-    return `
-      <div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${insertDashIntoStr(offer.title)}" type="checkbox" name="event-offer-${insertDashIntoStr(offer.title)}" ${checked}>
-        <label class="event__offer-label" for="event-offer-${insertDashIntoStr(offer.title)}">
-          <span class="event__offer-title">${offer.title}</span>
-          &plus;&euro;&nbsp;
-          <span class="event__offer-price">${offer.price}</span>
-        </label>
-      </div>
-    `;
-  }).join('');
+  return (`
+    <div class="event__offer-selector">
+      <input id="event-offer-${insertDashIntoStr(title)}"
+        class="event__offer-checkbox  visually-hidden"
+        type="checkbox"
+        name="event-offer-${insertDashIntoStr(title)}"
+        ${checked}
+      >
+      <label class="event__offer-label" for="event-offer-${insertDashIntoStr(title)}">
+        <span class="event__offer-title">${title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${price}</span>
+      </label>
+    </div>
+  `);
+}
+
+function createEditFormOffersTemplate(allOffers, pointOffers, pointType) {
+  const offerTemplate = getOffers(allOffers, pointType)
+    .map((offer) => createEditFormOfferTemplate(pointOffers, offer))
+    .join('');
+
+  return (`
+    <div class="event__available-offers">
+      ${offerTemplate}
+    </div>
+  `);
 }
 
 function createEditFormDestinationTemplate (allDestinations) {
@@ -52,17 +68,34 @@ function createEditFormDestinationDescTemplate (pointDestination) {
   `);
 }
 
-function createEditFormTypeTemplate(pointType) {
-  return Object.values(POINT_TYPE).map((type) => {
-    const checked = type === pointType ? 'checked' : '';
+function createEditFormTypeTemplate(pointType, type) {
+  const checked = type === pointType ? 'checked' : '';
 
-    return `
-      <div class="event__type-item">
-        <input id="event-type-${type.toLowerCase()}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}" ${checked}>
-        <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}">${type}</label>
-      </div>
-    `;
-  }).join('');
+  return (`
+    <div class="event__type-item">
+      <input id="event-type-${type.toLowerCase()}"
+        class="event__type-input  visually-hidden"
+        type="radio"
+        name="event-type"
+        value="${type.toLowerCase()}"
+        ${checked}
+      >
+      <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}">${type}</label>
+    </div>
+  `);
+}
+
+function createEditFormTypesTemplate(pointType) {
+  const typeTemplate = Object.values(POINT_TYPE)
+    .map((type) => createEditFormTypeTemplate(pointType, type))
+    .join('');
+
+  return (`
+    <fieldset class="event__type-group">
+      <legend class="visually-hidden">Event type</legend>
+      ${typeTemplate}
+    </fieldset>
+  `);
 }
 
 function createEditFormTemplate(point, allOffers, allDestinations) {
@@ -84,9 +117,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
             <div class="event__type-list">
-              <fieldset class="event__type-group">
-                <legend class="visually-hidden">Event type</legend>
-                ${createEditFormTypeTemplate(type)}
+              ${createEditFormTypesTemplate(type)}
             </div>
           </div>
 
@@ -125,10 +156,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
         <section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-            <div class="event__available-offers">
-              ${createEditFormOfferTemplate(allOffers, offers, type)}
-            </div>
+            ${createEditFormOffersTemplate(allOffers, offers, type)}
           </section>
 
           <section class="event__section  event__section--destination">
