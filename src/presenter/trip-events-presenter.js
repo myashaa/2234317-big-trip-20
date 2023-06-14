@@ -5,6 +5,8 @@ import NoTripPointView from '../view/no-point-view.js';
 import {render} from '../framework/render.js';
 import TripPointPresenter from './trip-point-presenter.js';
 import {updateItem} from '../utils/common.js';
+import {sort} from '../utils/sort.js';
+import {SORT_TYPE} from '../const.js';
 
 export default class TripEventsPresenter {
   #tripContainer = null;
@@ -14,9 +16,10 @@ export default class TripEventsPresenter {
   #offers = [];
   #destinations = [];
   #pointPresenters = new Map();
+  #currentSortType = SORT_TYPE.DAY.name;
 
   #listComponent = new ListView();
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #noPointComponent = new NoTripPointView();
 
   constructor({tripContainer, pointsModel}) {
@@ -28,6 +31,8 @@ export default class TripEventsPresenter {
     this.#points = [...this.#pointsModel.points];
     this.#offers = [...this.#pointsModel.offers];
     this.#destinations = [...this.#pointsModel.destinations];
+
+    sort(this.#points, this.#currentSortType);
 
     if (this.#points.length === 0) {
       this.#renderNoPoint();
@@ -46,6 +51,10 @@ export default class TripEventsPresenter {
   }
 
   #renderSort() {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+
     render(this.#sortComponent, this.#tripContainer);
   }
 
@@ -62,6 +71,11 @@ export default class TripEventsPresenter {
   #clearPoints() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
+  }
+
+  #sortPoints(sortType) {
+    sort(this.#points, sortType);
+    this.#currentSortType = sortType;
   }
 
   #renderNoPoint() {
@@ -87,5 +101,15 @@ export default class TripEventsPresenter {
 
   #handleModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    this.#clearPoints();
+    this.#renderPoints(this.#points, this.#offers, this.#destinations);
   };
 }

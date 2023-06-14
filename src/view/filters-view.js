@@ -6,8 +6,7 @@ function createFilterTemplate(filter, isChecked) {
   return (`
     <div class="trip-filters__filter">
       <input id="filter-${type.toLowerCase()}"
-        class="trip-filters__filter-input
-        visually-hidden"
+        class="trip-filters__filter-input visually-hidden"
         type="radio"
         name="trip-filter"
         value="${type.toLowerCase()}"

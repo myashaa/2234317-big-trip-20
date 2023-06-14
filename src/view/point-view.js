@@ -17,14 +17,28 @@ function getOffers (allOffers, pointOffers, pointType) {
   return choosenOffers;
 }
 
-function createTripPointOfferTemplate (allOffers, pointOffers, pointType) {
-  return getOffers(allOffers, pointOffers, pointType).map((offer) => `
+function createTripPointOfferTemplate(offer) {
+  const {title, price} = offer;
+
+  return (`
     <li class="event__offer">
-      <span class="event__offer-title">${offer.title}</span>
+      <span class="event__offer-title">${title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offer.price}</span>
+      <span class="event__offer-price">${price}</span>
     </li>
-  `).join('');
+  `);
+}
+
+function createTripPointOffersTemplate(allOffers, pointOffers, pointType) {
+  const offerTemplate = getOffers(allOffers, pointOffers, pointType)
+    .map((offer) => createTripPointOfferTemplate(offer))
+    .join('');
+
+  return (`
+    <ul class="event__selected-offers">
+      ${offerTemplate}
+    </ul>
+  `);
 }
 
 function createTripPointTemplate (point, allOffers, allDestinations) {
@@ -57,9 +71,7 @@ function createTripPointTemplate (point, allOffers, allDestinations) {
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-        <ul class="event__selected-offers">
-          ${createTripPointOfferTemplate(allOffers, offers, type)}
-        </ul>
+        ${createTripPointOffersTemplate(allOffers, offers, type)}
         <button class="event__favorite-btn ${favoriteClass}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

@@ -13,7 +13,7 @@ import {getRandomDestination} from './destination.js';
 const mockPoints = [
   {
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-03T13:45',
+    dateFrom: '2023-01-02T10:45',
     dateTo: '2023-01-03T14:55',
     destination: getRandomDestination().id,
     isFavorite: false,
@@ -26,7 +26,7 @@ const mockPoints = [
   },
   {
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-03T13:45',
+    dateFrom: '2023-01-03T11:45',
     dateTo: '2023-01-03T15:05',
     destination: getRandomDestination().id,
     isFavorite: true,
@@ -35,7 +35,7 @@ const mockPoints = [
   },
   {
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-03T13:45',
+    dateFrom: '2023-01-03T12:45',
     dateTo: '2023-01-04T15:15',
     destination: getRandomDestination().id,
     isFavorite: false,
