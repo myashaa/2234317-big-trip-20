@@ -4,7 +4,7 @@ import {
   humanizeDate
 } from '../utils/date.js';
 import {insertDashIntoStr} from '../utils/common.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 function getDestination (allDestinations, pointDestination) {
   return allDestinations.find((item) => pointDestination.includes(item.id));
@@ -169,8 +169,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
   `);
 }
 
-export default class EditFormView extends AbstractView {
-  #point = null;
+export default class EditFormView extends AbstractStatefulView {
   #offers = null;
   #destinations = null;
   #handleFormSubmit = null;
@@ -178,7 +177,7 @@ export default class EditFormView extends AbstractView {
 
   constructor({ point, offers, destinations, onFormSubmit, onRollUpClick }) {
     super();
-    this.#point = point;
+    this._setState(EditFormView.parsePointToState(point));
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleFormSubmit = onFormSubmit;
@@ -191,16 +190,24 @@ export default class EditFormView extends AbstractView {
   }
 
   get template() {
-    return createEditFormTemplate(this.#point, this.#offers, this.#destinations);
+    return createEditFormTemplate(this._state, this.#offers, this.#destinations);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
   #rollUpClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleRollUpClick();
   };
+
+  static parsePointToState(point) {
+    return {...point};
+  }
+
+  static parseStateToPoint(state) {
+    return {...state};
+  }
 }
