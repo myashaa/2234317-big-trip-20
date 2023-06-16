@@ -193,6 +193,14 @@ export default class EditFormView extends AbstractStatefulView {
     this.#handleFormSubmit = onFormSubmit;
     this.#handleRollUpClick = onRollUpClick;
 
+    this._restoreHandlers();
+  }
+
+  get template() {
+    return createEditFormTemplate(this._state, this.#offers, this.#destinations);
+  }
+
+  _restoreHandlers() {
     this.element.querySelector('form')
       .addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn')
@@ -205,10 +213,6 @@ export default class EditFormView extends AbstractStatefulView {
       .addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
-  }
-
-  get template() {
-    return createEditFormTemplate(this._state, this.#offers, this.#destinations);
   }
 
   #formSubmitHandler = (evt) => {
