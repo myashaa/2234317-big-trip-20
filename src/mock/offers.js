@@ -230,31 +230,6 @@ const mockOffers = [
         price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE)
       }
     ]
-  },
-  {
-    type: POINT_TYPE.FLIGHT,
-    offers: [
-      {
-        id: '0',
-        title: 'Add luggage',
-        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE)
-      },
-      {
-        id: '1',
-        title: 'Switch to comfort',
-        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE)
-      },
-      {
-        id: '2',
-        title: 'Transportation for an animal',
-        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE)
-      },
-      {
-        id: '3',
-        title: 'A place for a child',
-        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE)
-      }
-    ]
   }
 ];
 
