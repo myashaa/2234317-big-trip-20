@@ -10,6 +10,8 @@ const MAX_INDEX_OF_DESTINATION_PHOTO = 100;
 const MIN_POINT_PRICE = 1000;
 const MAX_POINT_PRICE = 7000;
 
+const MAX_DATE_TO = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+
 const POINT_TYPE = {
   TAXI: 'Taxi',
   BUS: 'Bus',
@@ -81,6 +83,7 @@ export {
   MAX_OFFER_PRICE,
   MAX_INDEX_OF_DESTINATION_PHOTO,
   MAX_POINT_PRICE,
+  MAX_DATE_TO,
   MODE,
   POINT_COUNT,
   POINT_TYPE,

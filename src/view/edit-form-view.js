@@ -1,10 +1,17 @@
-import {POINT_TYPE} from '../const.js';
 import {
+  POINT_TYPE,
+  MAX_DATE_TO
+} from '../const.js';
+import {
+  CURRENT_DATE,
   DATE_TIME_FORMAT,
   humanizeDate
 } from '../utils/date.js';
 import {insertDashIntoStr} from '../utils/common.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 function getDestinationById (allDestinations, pointDestination) {
   return allDestinations.find((item) => pointDestination.includes(item.id));
@@ -184,6 +191,8 @@ export default class EditFormView extends AbstractStatefulView {
   #destinations = null;
   #handleFormSubmit = null;
   #handleRollUpClick = null;
+  #datepickerFrom = null;
+  #datepickerTo = null;
 
   constructor({ point, offers, destinations, onFormSubmit, onRollUpClick }) {
     super();
@@ -198,6 +207,18 @@ export default class EditFormView extends AbstractStatefulView {
 
   get template() {
     return createEditFormTemplate(this._state, this.#offers, this.#destinations);
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datepickerFrom) {
+      this.#destroyDatepicker(this.#datepickerFrom);
+    }
+
+    if (this.#datepickerTo) {
+      this.#destroyDatepicker(this.#datepickerTo);
+    }
   }
 
   reset(point) {
@@ -219,6 +240,8 @@ export default class EditFormView extends AbstractStatefulView {
       .addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
+
+    this.#setDatepickers();
   }
 
   #formSubmitHandler = (evt) => {
@@ -264,6 +287,48 @@ export default class EditFormView extends AbstractStatefulView {
       basePrice: newPrice,
     });
   };
+
+  #dateFromChangeHandler = ([userDate]) => {
+    this._setState({
+      dateFrom: userDate,
+    });
+    this.#datepickerTo.set('minDate', this._state.dateFrom);
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this._setState({
+      dateTo: userDate,
+    });
+    this.#datepickerFrom.set('maxDate', this._state.dateTo);
+  };
+
+  #setDatepickers() {
+    const dateFromElement = this.element.querySelector('#event-start-time-1');
+    const dateToElement = this.element.querySelector('#event-end-time-1');
+
+    this.#datepickerFrom = this.#setDatepicker(dateFromElement, CURRENT_DATE, this._state.dateFrom, this._state.dateTo, this.#dateFromChangeHandler);
+    this.#datepickerTo = this.#setDatepicker(dateToElement, this._state.dateFrom, this._state.dateTo, MAX_DATE_TO, this.#dateToChangeHandler);
+  }
+
+  #setDatepicker(element, minDate, date, maxDate, handler) {
+    return new flatpickr(
+      element,
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        minDate: minDate,
+        defaultDate: date,
+        maxDate: maxDate,
+        onChange: handler,
+        'time_24hr': true
+      },
+    );
+  }
+
+  #destroyDatepicker(datepicker) {
+    datepicker.destroy();
+    datepicker = null;
+  }
 
   static parsePointToState(point) {
     return {...point};

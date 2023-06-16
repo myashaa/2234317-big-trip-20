@@ -7,6 +7,7 @@ dayjs.extend(duration);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
+const CURRENT_DATE = new Date();
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
 const DATE_TIME_FORMAT = 'DD/MM/YY HH:mm';
@@ -62,6 +63,7 @@ function getTimeDifference (pointA, pointB) {
 }
 
 export {
+  CURRENT_DATE,
   DATE_FORMAT,
   TIME_FORMAT,
   DATE_TIME_FORMAT,
