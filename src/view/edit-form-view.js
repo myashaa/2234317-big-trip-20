@@ -187,6 +187,8 @@ export default class EditFormView extends AbstractStatefulView {
   #destinations = null;
   #handleFormSubmit = null;
   #handleRollUpClick = null;
+  #datepickerFrom = null;
+  #datepickerTo = null;
 
   constructor({ point, offers, destinations, onFormSubmit, onRollUpClick }) {
     super();
@@ -201,6 +203,18 @@ export default class EditFormView extends AbstractStatefulView {
 
   get template() {
     return createEditFormTemplate(this._state, this.#offers, this.#destinations);
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datepickerFrom) {
+      this.#destroyDatepicker(this.#datepickerFrom);
+    }
+
+    if (this.#datepickerTo) {
+      this.#destroyDatepicker(this.#datepickerTo);
+    }
   }
 
   reset(point) {
@@ -267,6 +281,24 @@ export default class EditFormView extends AbstractStatefulView {
       basePrice: newPrice,
     });
   };
+
+  #setDatepicker(datepicker, element, minDate, date, handler) {
+    datepicker = flatpickr(
+      element,
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        minDate: minDate,
+        defaultDate: date,
+        onChange: handler,
+      },
+    );
+  }
+
+  #destroyDatepicker(datepicker) {
+    datepicker.destroy();
+    datepicker = null;
+  }
 
   static parsePointToState(point) {
     return {...point};
