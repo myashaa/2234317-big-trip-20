@@ -5,6 +5,9 @@ import {
 } from '../utils/date.js';
 import {insertDashIntoStr} from '../utils/common.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 function getDestinationById (allDestinations, pointDestination) {
   return allDestinations.find((item) => pointDestination.includes(item.id));
