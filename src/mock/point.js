@@ -13,8 +13,8 @@ import {getRandomDestination} from './destination.js';
 const mockPoints = [
   {
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-02T10:45',
-    dateTo: '2023-01-03T14:55',
+    dateFrom: '2023-07-02T10:45:00.000Z',
+    dateTo: '2023-07-03T14:55:00.000Z',
     destination: getRandomDestination().id,
     isFavorite: false,
     offers: [
@@ -26,8 +26,8 @@ const mockPoints = [
   },
   {
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-03T11:45',
-    dateTo: '2023-01-03T15:05',
+    dateFrom: '2023-07-03T11:45:00.000Z',
+    dateTo: '2023-07-03T15:05:00.000Z',
     destination: getRandomDestination().id,
     isFavorite: true,
     offers: ['2'],
@@ -35,8 +35,8 @@ const mockPoints = [
   },
   {
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-03T12:45',
-    dateTo: '2023-01-04T15:15',
+    dateFrom: '2023-07-03T12:45:00.000Z',
+    dateTo: '2023-07-04T15:15:00.000Z',
     destination: getRandomDestination().id,
     isFavorite: false,
     offers: [
@@ -47,8 +47,8 @@ const mockPoints = [
   },
   {
     basePrice: getRandomInteger(MIN_POINT_PRICE, MAX_POINT_PRICE),
-    dateFrom: '2023-01-04T13:45',
-    dateTo: '2023-01-04T14:25',
+    dateFrom: '2023-07-04T13:45:00.000Z',
+    dateTo: '2023-07-04T14:25:00.000Z',
     destination: getRandomDestination().id,
     isFavorite: false,
     offers: ['0'],

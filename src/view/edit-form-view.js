@@ -1,5 +1,9 @@
-import {POINT_TYPE} from '../const.js';
 import {
+  POINT_TYPE,
+  MAX_DATE_TO
+} from '../const.js';
+import {
+  CURRENT_DATE,
   DATE_TIME_FORMAT,
   humanizeDate
 } from '../utils/date.js';
@@ -236,6 +240,8 @@ export default class EditFormView extends AbstractStatefulView {
       .addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
+
+    this.#setDatepickers();
   }
 
   #formSubmitHandler = (evt) => {
@@ -282,15 +288,39 @@ export default class EditFormView extends AbstractStatefulView {
     });
   };
 
-  #setDatepicker(datepicker, element, minDate, date, handler) {
-    datepicker = flatpickr(
+  #dateFromChangeHandler = ([userDate]) => {
+    this._setState({
+      dateFrom: userDate,
+    });
+    this.#datepickerTo.set('minDate', this._state.dateFrom);
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this._setState({
+      dateTo: userDate,
+    });
+    this.#datepickerFrom.set('maxDate', this._state.dateTo);
+  };
+
+  #setDatepickers() {
+    const dateFromElement = this.element.querySelector('#event-start-time-1');
+    const dateToElement = this.element.querySelector('#event-end-time-1');
+
+    this.#datepickerFrom = this.#setDatepicker(dateFromElement, CURRENT_DATE, this._state.dateFrom, this._state.dateTo, this.#dateFromChangeHandler);
+    this.#datepickerTo = this.#setDatepicker(dateToElement, this._state.dateFrom, this._state.dateTo, MAX_DATE_TO, this.#dateToChangeHandler);
+  }
+
+  #setDatepicker(element, minDate, date, maxDate, handler) {
+    return new flatpickr(
       element,
       {
         dateFormat: 'd/m/y H:i',
         enableTime: true,
         minDate: minDate,
         defaultDate: date,
+        maxDate: maxDate,
         onChange: handler,
+        'time_24hr': true
       },
     );
   }
