@@ -43,12 +43,12 @@ export default class TripEventsPresenter {
     const filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
     const filteredPoints = filter[filterType](points);
+    sort(filteredPoints, this.#currentSortType);
 
     return filteredPoints;
   }
 
   init() {
-    sort(this.points, this.#currentSortType);
     this.#renderRouteSheet();
   }
 
@@ -92,11 +92,6 @@ export default class TripEventsPresenter {
     for (let i = 0; i < points.length; i++) {
       this.#renderPoint(points[i], offersModel, destinationsModel);
     }
-  }
-
-  #sortPoints(sortType) {
-    sort(this.points, sortType);
-    this.#currentSortType = sortType;
   }
 
   #renderNoPoint() {
@@ -154,7 +149,7 @@ export default class TripEventsPresenter {
       return;
     }
 
-    this.#sortPoints(sortType);
+    this.#currentSortType = sortType;
     this.#clearRouteSheet();
     this.#renderRouteSheet();
   };
