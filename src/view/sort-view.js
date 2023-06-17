@@ -20,9 +20,9 @@ function createSortItemTemplate(item, isChecked) {
   `);
 }
 
-function createSortTemplate() {
+function createSortTemplate(currentSortType) {
   const sortTemplate = Object.values(SORT_TYPE)
-    .map((item, index) => createSortItemTemplate(item, index === 0))
+    .map((item) => createSortItemTemplate(item, item.name === currentSortType))
     .join('');
 
   return (`
@@ -33,17 +33,19 @@ function createSortTemplate() {
 }
 
 export default class SortView extends AbstractView {
+  #currentSortType = null;
   #handleSortTypeChange = null;
 
-  constructor({onSortTypeChange}) {
+  constructor({currentSortType, onSortTypeChange}) {
     super();
+    this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
 
     this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createSortTemplate();
+    return createSortTemplate(this.#currentSortType);
   }
 
   #sortTypeChangeHandler = (evt) => {

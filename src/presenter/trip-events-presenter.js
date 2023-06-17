@@ -1,8 +1,10 @@
-//import CreationFormView from '../view/creation-form-view.js';
 import SortView from '../view/sort-view.js';
 import ListView from '../view/list-view.js';
 import NoTripPointView from '../view/no-point-view.js';
-import {render} from '../framework/render.js';
+import {
+  render,
+  remove
+} from '../framework/render.js';
 import TripPointPresenter from './trip-point-presenter.js';
 import {sort} from '../utils/sort.js';
 import {
@@ -39,25 +41,35 @@ export default class TripEventsPresenter {
 
   init() {
     sort(this.points, this.#currentSortType);
-
-    if (this.points.length === 0) {
-      this.#renderNoPoint();
-    } else {
-      this.#renderRouteSheet();
-    }
+    this.#renderRouteSheet();
   }
 
   #renderRouteSheet() {
+    if (this.points.length === 0) {
+      this.#renderNoPoint();
+      return;
+    }
+
     this.#renderSort();
     this.#renderList();
-
-    //render(new CreationFormView(), this.#listComponent.element);
-
     this.#renderPoints(this.points, this.#offersModel, this.#destinationsModel);
+  }
+
+  #clearRouteSheet({resetSortType = false} = {}) {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+
+    remove(this.#sortComponent);
+    remove(this.#noPointComponent);
+
+    if (resetSortType) {
+      this.#currentSortType = SORT_TYPE.DAY.name;
+    }
   }
 
   #renderSort() {
     this.#sortComponent = new SortView({
+      currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
     });
 
@@ -74,10 +86,10 @@ export default class TripEventsPresenter {
     }
   }
 
-  #clearPoints() {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
-  }
+  // #clearPoints() {
+  //   this.#pointPresenters.forEach((presenter) => presenter.destroy());
+  //   this.#pointPresenters.clear();
+  // }
 
   #sortPoints(sortType) {
     sort(this.points, sortType);
@@ -120,10 +132,12 @@ export default class TripEventsPresenter {
         this.#pointPresenters.get(data.id).init(data);
         break;
       case UPDATE_TYPE.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
+        this.#clearRouteSheet();
+        this.#renderRouteSheet();
         break;
       case UPDATE_TYPE.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this.#clearRouteSheet({resetSortType: true});
+        this.#renderRouteSheet();
         break;
     }
   };
@@ -138,7 +152,7 @@ export default class TripEventsPresenter {
     }
 
     this.#sortPoints(sortType);
-    this.#clearPoints();
-    this.#renderPoints(this.points, this.#offersModel, this.#destinationsModel);
+    this.#clearRouteSheet();
+    this.#renderRouteSheet();
   };
 }
