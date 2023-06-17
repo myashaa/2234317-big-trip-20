@@ -9,6 +9,8 @@ import {MODE} from '../const.js';
 
 export default class TripPointPresenter {
   #pointContainer = null;
+  #offersModel = null;
+  #destinationsModel = null;
   #handleDataChange = null;
   #handleModeChange = null;
 
@@ -20,16 +22,18 @@ export default class TripPointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
 
-  constructor({pointContainer, offers, destinations, onDataChange, onModeChange}) {
+  constructor({pointContainer, offersModel, destinationsModel, onDataChange, onModeChange}) {
     this.#pointContainer = pointContainer;
-    this.#offers = offers;
-    this.#destinations = destinations;
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
   }
 
   init(point) {
     this.#point = point;
+    this.#offers = [...this.#offersModel.offers];
+    this.#destinations = [...this.#destinationsModel.destinations];
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
@@ -109,6 +113,7 @@ export default class TripPointPresenter {
   };
 
   #handleRollUpClick = () => {
+    this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToPoint();
   };
 

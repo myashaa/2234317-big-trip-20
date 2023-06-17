@@ -11,10 +11,10 @@ import {SORT_TYPE} from '../const.js';
 export default class TripEventsPresenter {
   #tripContainer = null;
   #pointsModel = null;
+  #offersModel = null;
+  #destinationsModel = null;
 
   #points = [];
-  #offers = [];
-  #destinations = [];
   #pointPresenters = new Map();
   #currentSortType = SORT_TYPE.DAY.name;
 
@@ -22,15 +22,15 @@ export default class TripEventsPresenter {
   #sortComponent = null;
   #noPointComponent = new NoTripPointView();
 
-  constructor({tripContainer, pointsModel}) {
+  constructor({tripContainer, pointsModel, offersModel, destinationsModel}) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
   }
 
   init() {
     this.#points = [...this.#pointsModel.points];
-    this.#offers = [...this.#pointsModel.offers];
-    this.#destinations = [...this.#pointsModel.destinations];
 
     sort(this.#points, this.#currentSortType);
 
@@ -47,7 +47,7 @@ export default class TripEventsPresenter {
 
     //render(new CreationFormView(), this.#listComponent.element);
 
-    this.#renderPoints(this.#points, this.#offers, this.#destinations);
+    this.#renderPoints(this.#points, this.#offersModel, this.#destinationsModel);
   }
 
   #renderSort() {
@@ -62,9 +62,9 @@ export default class TripEventsPresenter {
     render(this.#listComponent, this.#tripContainer);
   }
 
-  #renderPoints(points, offers, destinations) {
+  #renderPoints(points, offersModel, destinationsModel) {
     for (let i = 0; i < points.length; i++) {
-      this.#renderPoint(points[i], offers, destinations);
+      this.#renderPoint(points[i], offersModel, destinationsModel);
     }
   }
 
@@ -82,11 +82,11 @@ export default class TripEventsPresenter {
     render(this.#noPointComponent, this.#tripContainer);
   }
 
-  #renderPoint(point, offers, destinations) {
+  #renderPoint(point, offersModel, destinationsModel) {
     const pointPresenter = new TripPointPresenter({
       pointContainer: this.#listComponent.element,
-      offers: offers,
-      destinations: destinations,
+      offersModel: offersModel,
+      destinationsModel: destinationsModel,
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange,
     });
@@ -110,6 +110,6 @@ export default class TripEventsPresenter {
 
     this.#sortPoints(sortType);
     this.#clearPoints();
-    this.#renderPoints(this.#points, this.#offers, this.#destinations);
+    this.#renderPoints(this.#points, this.#offersModel, this.#destinationsModel);
   };
 }
