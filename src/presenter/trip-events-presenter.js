@@ -10,7 +10,8 @@ import {sort} from '../utils/sort.js';
 import {
   SORT_TYPE,
   USER_ACTION,
-  UPDATE_TYPE
+  UPDATE_TYPE,
+  FILTER_TYPE
 } from '../const.js';
 import {filter} from '../utils/filter.js';
 
@@ -23,10 +24,11 @@ export default class TripEventsPresenter {
 
   #pointPresenters = new Map();
   #currentSortType = SORT_TYPE.DAY.name;
+  #filterType = FILTER_TYPE.EVERYTHING;
 
   #listComponent = new ListView();
   #sortComponent = null;
-  #noPointComponent = new NoTripPointView();
+  #noPointComponent = null;
 
   constructor({tripContainer, pointsModel, offersModel, destinationsModel, filterModel}) {
     this.#tripContainer = tripContainer;
@@ -40,9 +42,9 @@ export default class TripEventsPresenter {
   }
 
   get points() {
-    const filterType = this.#filterModel.filter;
+    this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
-    const filteredPoints = filter[filterType](points);
+    const filteredPoints = filter[this.#filterType](points);
     sort(filteredPoints, this.#currentSortType);
 
     return filteredPoints;
@@ -68,7 +70,10 @@ export default class TripEventsPresenter {
     this.#pointPresenters.clear();
 
     remove(this.#sortComponent);
-    remove(this.#noPointComponent);
+
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
 
     if (resetSortType) {
       this.#currentSortType = SORT_TYPE.DAY.name;
@@ -95,6 +100,10 @@ export default class TripEventsPresenter {
   }
 
   #renderNoPoint() {
+    this.#noPointComponent = new NoTripPointView({
+      filterType: this.#filterType
+    });
+
     render(this.#noPointComponent, this.#tripContainer);
   }
 
