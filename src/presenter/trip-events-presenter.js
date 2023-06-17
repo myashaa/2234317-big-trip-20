@@ -5,7 +5,11 @@ import NoTripPointView from '../view/no-point-view.js';
 import {render} from '../framework/render.js';
 import TripPointPresenter from './trip-point-presenter.js';
 import {sort} from '../utils/sort.js';
-import {SORT_TYPE} from '../const.js';
+import {
+  SORT_TYPE,
+  USER_ACTION,
+  UPDATE_TYPE
+} from '../const.js';
 
 export default class TripEventsPresenter {
   #tripContainer = null;
@@ -96,25 +100,32 @@ export default class TripEventsPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
-  // #handlePointChange = (updatedPoint) => {
-  //   this.points = updateItem(this.points, updatedPoint);
-  //   this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
-  // };
-
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
-    // Здесь будем вызывать обновление модели.
-    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
-    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
-    // update - обновленные данные
+    switch (actionType) {
+      case USER_ACTION.UPDATE_POINT:
+        this.#pointsModel.updatePoint(updateType, update);
+        break;
+      case USER_ACTION.ADD_POINT:
+        this.#pointsModel.addPoint(updateType, update);
+        break;
+      case USER_ACTION.DELETE_POINT:
+        this.#pointsModel.deletePoint(updateType, update);
+        break;
+    }
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
-    // В зависимости от типа изменений решаем, что делать:
-    // - обновить часть списка (например, когда поменялось описание)
-    // - обновить список (например, когда задача ушла в архив)
-    // - обновить всю доску (например, при переключении фильтра)
+    switch (updateType) {
+      case UPDATE_TYPE.PATCH:
+        this.#pointPresenters.get(data.id).init(data);
+        break;
+      case UPDATE_TYPE.MINOR:
+        // - обновить список (например, когда задача ушла в архив)
+        break;
+      case UPDATE_TYPE.MAJOR:
+        // - обновить всю доску (например, при переключении фильтра)
+        break;
+    }
   };
 
   #handleModeChange = () => {

@@ -113,7 +113,7 @@ export default class TripPointPresenter {
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
-      USER_ACTION.UPDATE_TASK,
+      USER_ACTION.UPDATE_POINT,
       UPDATE_TYPE.MINOR,
       point,
     );
@@ -127,7 +127,7 @@ export default class TripPointPresenter {
 
   #handleFavoriteClick = () => {
     this.#handleDataChange(
-      USER_ACTION.UPDATE_TASK,
+      USER_ACTION.UPDATE_POINT,
       UPDATE_TYPE.MINOR,
       {...this.#point, isFavorite: !this.#point.isFavorite},
     );
