@@ -1,21 +1,14 @@
 import TripInfoView from './view/trip-info-view.js';
-import FiltersView from './view/filters-view.js';
 import {
   RenderPosition,
   render
 } from './framework/render.js';
 import TripEventsPresenter from './presenter/trip-events-presenter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import OffersModel from './model/offers-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import FilterModel from './model/filter-model.js';
-
-const filters = [
-  {
-    type: 'everything',
-    hasPoints: false,
-  },
-];
 
 const tripMainElement = document.querySelector('.trip-main');
 const tripFiltersElement = document.querySelector('.trip-controls__filters');
@@ -31,11 +24,12 @@ const tripEventsPresenter = new TripEventsPresenter({
   offersModel,
   destinationsModel
 });
+const filterPresenter = new FilterPresenter({
+  filterContainer: tripFiltersElement,
+  filterModel,
+  pointsModel
+});
 
 render(new TripInfoView(), tripMainElement, RenderPosition.AFTERBEGIN);
-render(new FiltersView({
-  filters,
-  currentFilterType: 'everything',
-  onFilterTypeChange: () => {}
-}), tripFiltersElement);
+filterPresenter.init();
 tripEventsPresenter.init();
