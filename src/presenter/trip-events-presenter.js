@@ -86,11 +86,6 @@ export default class TripEventsPresenter {
     }
   }
 
-  // #clearPoints() {
-  //   this.#pointPresenters.forEach((presenter) => presenter.destroy());
-  //   this.#pointPresenters.clear();
-  // }
-
   #sortPoints(sortType) {
     sort(this.points, sortType);
     this.#currentSortType = sortType;

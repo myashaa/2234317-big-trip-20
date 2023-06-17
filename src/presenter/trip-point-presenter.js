@@ -55,6 +55,7 @@ export default class TripPointPresenter {
       destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
       onRollUpClick: this.#handleRollUpClick,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -130,6 +131,14 @@ export default class TripPointPresenter {
       USER_ACTION.UPDATE_POINT,
       UPDATE_TYPE.MINOR,
       {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      USER_ACTION.DELETE_POINT,
+      UPDATE_TYPE.MINOR,
+      point,
     );
   };
 }
