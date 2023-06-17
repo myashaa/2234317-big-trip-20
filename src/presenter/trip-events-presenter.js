@@ -4,7 +4,6 @@ import ListView from '../view/list-view.js';
 import NoTripPointView from '../view/no-point-view.js';
 import {render} from '../framework/render.js';
 import TripPointPresenter from './trip-point-presenter.js';
-import {updateItem} from '../utils/common.js';
 import {sort} from '../utils/sort.js';
 import {SORT_TYPE} from '../const.js';
 
@@ -26,6 +25,8 @@ export default class TripEventsPresenter {
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
@@ -88,16 +89,32 @@ export default class TripEventsPresenter {
       pointContainer: this.#listComponent.element,
       offersModel: offersModel,
       destinationsModel: destinationsModel,
-      onDataChange: this.#handlePointChange,
+      onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
     });
     pointPresenter.init(point);
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
-  #handlePointChange = (updatedPoint) => {
-    this.points = updateItem(this.points, updatedPoint);
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  // #handlePointChange = (updatedPoint) => {
+  //   this.points = updateItem(this.points, updatedPoint);
+  //   this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  // };
+
+  #handleViewAction = (actionType, updateType, update) => {
+    console.log(actionType, updateType, update);
+    // Здесь будем вызывать обновление модели.
+    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
+    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
+    // update - обновленные данные
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    console.log(updateType, data);
+    // В зависимости от типа изменений решаем, что делать:
+    // - обновить часть списка (например, когда поменялось описание)
+    // - обновить список (например, когда задача ушла в архив)
+    // - обновить всю доску (например, при переключении фильтра)
   };
 
   #handleModeChange = () => {

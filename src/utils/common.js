@@ -14,13 +14,8 @@ function insertDashIntoStr (str) {
   return str.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, '').replace(/\s/g, '-');
 }
 
-function updateItem(items, update) {
-  return items.map((item) => item.id === update.id ? update : item);
-}
-
 export {
   getRandomArrayElement,
   getRandomInteger,
-  insertDashIntoStr,
-  updateItem
+  insertDashIntoStr
 };

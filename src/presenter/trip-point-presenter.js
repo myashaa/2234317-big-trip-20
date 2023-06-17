@@ -5,7 +5,11 @@ import {
   replace,
   remove
 } from '../framework/render.js';
-import {MODE} from '../const.js';
+import {
+  MODE,
+  USER_ACTION,
+  UPDATE_TYPE
+} from '../const.js';
 
 export default class TripPointPresenter {
   #pointContainer = null;
@@ -108,7 +112,11 @@ export default class TripPointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+    this.#handleDataChange(
+      USER_ACTION.UPDATE_TASK,
+      UPDATE_TYPE.MINOR,
+      point,
+    );
     this.#replaceFormToPoint();
   };
 
@@ -118,6 +126,10 @@ export default class TripPointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange(
+      USER_ACTION.UPDATE_TASK,
+      UPDATE_TYPE.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 }
