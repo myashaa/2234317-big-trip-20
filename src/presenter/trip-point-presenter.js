@@ -10,6 +10,8 @@ import {
   USER_ACTION,
   UPDATE_TYPE
 } from '../const.js';
+import {isDateEqual} from '../utils/date.js';
+import {isPriceEqual} from '../utils/point.js';
 
 export default class TripPointPresenter {
   #pointContainer = null;
@@ -112,11 +114,16 @@ export default class TripPointPresenter {
     this.#replacePointToForm();
   };
 
-  #handleFormSubmit = (point) => {
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate =
+      !isDateEqual(this.#point.dateFrom, update.dateFrom) ||
+      !isDateEqual(this.#point.dateTo, update.dateTo) ||
+      !isPriceEqual(this.#point.basePrice, update.basePrice);
+
     this.#handleDataChange(
       USER_ACTION.UPDATE_POINT,
-      UPDATE_TYPE.MINOR,
-      point,
+      isMinorUpdate ? UPDATE_TYPE.MINOR : UPDATE_TYPE.PATCH,
+      update,
     );
     this.#replaceFormToPoint();
   };
