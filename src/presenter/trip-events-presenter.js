@@ -14,7 +14,6 @@ export default class TripEventsPresenter {
   #offersModel = null;
   #destinationsModel = null;
 
-  #points = [];
   #pointPresenters = new Map();
   #currentSortType = SORT_TYPE.DAY.name;
 
@@ -34,11 +33,9 @@ export default class TripEventsPresenter {
   }
 
   init() {
-    this.#points = [...this.#pointsModel.points];
+    sort(this.points, this.#currentSortType);
 
-    sort(this.#points, this.#currentSortType);
-
-    if (this.#points.length === 0) {
+    if (this.points.length === 0) {
       this.#renderNoPoint();
     } else {
       this.#renderRouteSheet();
@@ -51,7 +48,7 @@ export default class TripEventsPresenter {
 
     //render(new CreationFormView(), this.#listComponent.element);
 
-    this.#renderPoints(this.#points, this.#offersModel, this.#destinationsModel);
+    this.#renderPoints(this.points, this.#offersModel, this.#destinationsModel);
   }
 
   #renderSort() {
@@ -78,7 +75,7 @@ export default class TripEventsPresenter {
   }
 
   #sortPoints(sortType) {
-    sort(this.#points, sortType);
+    sort(this.points, sortType);
     this.#currentSortType = sortType;
   }
 
@@ -99,7 +96,7 @@ export default class TripEventsPresenter {
   }
 
   #handlePointChange = (updatedPoint) => {
-    this.#points = updateItem(this.#points, updatedPoint);
+    this.points = updateItem(this.points, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 
@@ -114,6 +111,6 @@ export default class TripEventsPresenter {
 
     this.#sortPoints(sortType);
     this.#clearPoints();
-    this.#renderPoints(this.#points, this.#offersModel, this.#destinationsModel);
+    this.#renderPoints(this.points, this.#offersModel, this.#destinationsModel);
   };
 }
