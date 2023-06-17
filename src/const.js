@@ -39,10 +39,10 @@ const DESTINATION_DESCRIPTION = [
 ];
 
 const FILTER_TYPE = {
-  EVERYTHING: 'Everything',
-  FUTURE: 'Future',
-  PRESENT: 'Present',
-  PAST: 'Past',
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
 };
 
 const MODE = {

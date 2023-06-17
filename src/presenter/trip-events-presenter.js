@@ -12,12 +12,14 @@ import {
   USER_ACTION,
   UPDATE_TYPE
 } from '../const.js';
+import {filter} from '../utils/filter.js';
 
 export default class TripEventsPresenter {
   #tripContainer = null;
   #pointsModel = null;
   #offersModel = null;
   #destinationsModel = null;
+  #filterModel = null;
 
   #pointPresenters = new Map();
   #currentSortType = SORT_TYPE.DAY.name;
@@ -26,17 +28,23 @@ export default class TripEventsPresenter {
   #sortComponent = null;
   #noPointComponent = new NoTripPointView();
 
-  constructor({tripContainer, pointsModel, offersModel, destinationsModel}) {
+  constructor({tripContainer, pointsModel, offersModel, destinationsModel, filterModel}) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
+    this.#filterModel = filterModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
-    return this.#pointsModel.points;
+    const filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+    const filteredPoints = filter[filterType](points);
+
+    return filteredPoints;
   }
 
   init() {

@@ -22,7 +22,8 @@ const tripEventsPresenter = new TripEventsPresenter({
   tripContainer: tripEventsElement,
   pointsModel,
   offersModel,
-  destinationsModel
+  destinationsModel,
+  filterModel,
 });
 const filterPresenter = new FilterPresenter({
   filterContainer: tripFiltersElement,

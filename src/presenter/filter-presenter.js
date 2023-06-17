@@ -1,7 +1,4 @@
-import {
-  FILTER_TYPE,
-  UPDATE_TYPE
-} from '../const.js';
+import {UPDATE_TYPE} from '../const.js';
 import {
   render,
   replace,
@@ -29,10 +26,12 @@ export default class FilterPresenter {
   get filters() {
     const points = this.#pointsModel.points;
 
-    return Object.values(FILTER_TYPE).map((type) => ({
-      type,
-      hasPoints: filter[type](points).length > 0,
-    }));
+    return Object.entries(filter).map(
+      ([filterType, filterPoints]) => ({
+        type: filterType,
+        hasPoints: filterPoints(points).length > 0,
+      }),
+    );
   }
 
   init() {
