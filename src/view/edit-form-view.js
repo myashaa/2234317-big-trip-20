@@ -28,18 +28,19 @@ function getOffers(allOffers, pointType) {
   return allOffers.find((item) => item.type === pointType).offers;
 }
 
-function createEditFormOfferTemplate(pointOffers, offer) {
+function createEditFormOfferTemplate(pointOffers, offer, isDisabled) {
   const {id, title, price} = offer;
   const checked = pointOffers.includes(id) ? 'checked' : '';
 
   return (`
     <div class="event__offer-selector">
       <input id="event-offer-${id}"
-        class="event__offer-checkbox  visually-hidden"
+        class="event__offer-checkbox visually-hidden"
         type="checkbox"
         name="event-offer-${insertDashIntoStr(title)}"
         data-offer-id="${id}"
         ${checked}
+        ${isDisabled ? 'disabled' : ''}
       >
       <label class="event__offer-label" for="event-offer-${id}">
         <span class="event__offer-title">${title}</span>
@@ -50,12 +51,12 @@ function createEditFormOfferTemplate(pointOffers, offer) {
   `);
 }
 
-function createEditFormOffersTemplate(allOffers, pointOffers, pointType) {
+function createEditFormOffersTemplate(allOffers, pointOffers, pointType, isDisabled) {
   const offers = getOffers(allOffers, pointType);
   const isHidden = offers.length === 0;
 
   const offerTemplate = offers
-    .map((offer) => createEditFormOfferTemplate(pointOffers, offer))
+    .map((offer) => createEditFormOfferTemplate(pointOffers, offer, isDisabled))
     .join('');
 
   return (`
@@ -75,6 +76,10 @@ function createEditFormDestinationTemplate (allDestinations) {
 }
 
 function createEditFormDestinationDescTemplate(pointDestination) {
+  if (!pointDestination) {
+    return '';
+  }
+
   const {description, pictures} = pointDestination;
   const isHidden = description === '' && pictures.length === 0;
 
@@ -130,10 +135,19 @@ function createEditFormTypesTemplate(pointType) {
   `);
 }
 
-function createEditFormButtonsTemplate(isCreating) {
+function createEditFormButtonsTemplate(isCreating, isDisabled, isSaving, isDeleting) {
+  let resetButtonText = isCreating ? 'Cancel' : 'Delete';
+  if (isDeleting) {
+    resetButtonText = isCreating ? 'Cancelling...' : 'Deleting...';
+  }
+
   return (`
-    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-    <button class="event__reset-btn" type="reset">${isCreating ? 'Cancel' : 'Delete'}</button>
+    <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>
+      ${isSaving ? 'Saving...' : 'Save'}
+    </button>
+    <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
+      ${resetButtonText}
+    </button>
     <button class="event__rollup-btn" ${isCreating ? 'style="display:none;"' : ''} type="button">
       <span class="visually-hidden">Open event</span>
     </button>
@@ -141,7 +155,7 @@ function createEditFormButtonsTemplate(isCreating) {
 }
 
 function createEditFormTemplate(point, allOffers, allDestinations) {
-  const {id, basePrice, dateFrom, dateTo, destination, offers, type} = point;
+  const {id, basePrice, dateFrom, dateTo, destination, offers, type, isDisabled, isSaving, isDeleting} = point;
 
   const pointDestination = getDestinationById(allDestinations, destination);
   const timeFrom = humanizeDate(dateFrom, DATE_TIME_FORMAT);
@@ -156,7 +170,11 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               <span class="visually-hidden">Choose event type</span>
               <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
-            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+            <input id="event-type-toggle-1"
+              class="event__type-toggle  visually-hidden"
+              type="checkbox"
+              ${isDisabled ? 'disabled' : ''}
+            >
 
             <div class="event__type-list">
               ${createEditFormTypesTemplate(type)}
@@ -171,9 +189,10 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               class="event__input  event__input--destination"
               type="text"
               name="event-destination"
-              value="${he.encode(pointDestination.name)}"
+              value="${pointDestination ? he.encode(pointDestination.name) : ''}"
               list="destination-list-1"
               required
+              ${isDisabled ? 'disabled' : ''}
             >
             <datalist id="destination-list-1">
               ${createEditFormDestinationTemplate(allDestinations)}
@@ -188,6 +207,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               name="event-start-time"
               value="${timeFrom}"
               required
+              ${isDisabled ? 'disabled' : ''}
             >
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
@@ -197,6 +217,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               name="event-end-time"
               value="${timeTo}"
               required
+              ${isDisabled ? 'disabled' : ''}
             >
           </div>
 
@@ -212,15 +233,16 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               name="event-price"
               value="${he.encode(basePrice.toString())}"
               required
+              ${isDisabled ? 'disabled' : ''}
             >
           </div>
 
-          ${createEditFormButtonsTemplate(id === BLANK_POINT_ID)}
+          ${createEditFormButtonsTemplate(id === BLANK_POINT_ID, isDisabled, isSaving, isDeleting)}
         </header>
         <section class="event__details">
-          ${createEditFormOffersTemplate(allOffers, offers, type)}
+          ${createEditFormOffersTemplate(allOffers, offers, type, isDisabled)}
 
-          ${createEditFormDestinationDescTemplate(getDestinationById(allDestinations, destination))}
+          ${createEditFormDestinationDescTemplate(pointDestination)}
         </section>
       </form>
     </li>
@@ -304,7 +326,7 @@ export default class EditFormView extends AbstractStatefulView {
     const newType = evt.target.dataset.type;
     this.updateElement({
       type: newType,
-      offers: getOffers(this.#offers, newType),
+      offers: [],
     });
   };
 
@@ -385,10 +407,20 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   static parsePointToState(point) {
-    return {...point};
+    return {...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
   }
 
   static parseStateToPoint(state) {
-    return {...state};
+    const point = { ...state };
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
   }
 }

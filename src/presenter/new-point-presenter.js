@@ -1,4 +1,3 @@
-import {nanoid} from 'nanoid';
 import EditFormView from '../view/edit-form-view.js';
 import {
   render,
@@ -63,6 +62,25 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
+  setSaving() {
+    this.#pointEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
+
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
@@ -74,9 +92,8 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       USER_ACTION.ADD_POINT,
       UPDATE_TYPE.MINOR,
-      {id: nanoid(), ...point},
+      point,
     );
-    this.destroy();
   };
 
   #handleDeleteClick = () => {
