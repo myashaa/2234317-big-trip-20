@@ -75,6 +75,10 @@ function createEditFormDestinationTemplate (allDestinations) {
 }
 
 function createEditFormDestinationDescTemplate(pointDestination) {
+  if (!pointDestination) {
+    return '';
+  }
+
   const {description, pictures} = pointDestination;
   const isHidden = description === '' && pictures.length === 0;
 
@@ -171,7 +175,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               class="event__input  event__input--destination"
               type="text"
               name="event-destination"
-              value="${he.encode(pointDestination.name)}"
+              value="${pointDestination ? he.encode(pointDestination.name) : ''}"
               list="destination-list-1"
               required
             >
@@ -220,7 +224,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
         <section class="event__details">
           ${createEditFormOffersTemplate(allOffers, offers, type)}
 
-          ${createEditFormDestinationDescTemplate(getDestinationById(allDestinations, destination))}
+          ${createEditFormDestinationDescTemplate(pointDestination)}
         </section>
       </form>
     </li>
@@ -304,7 +308,7 @@ export default class EditFormView extends AbstractStatefulView {
     const newType = evt.target.dataset.type;
     this.updateElement({
       type: newType,
-      offers: getOffers(this.#offers, newType),
+      offers: [],
     });
   };
 

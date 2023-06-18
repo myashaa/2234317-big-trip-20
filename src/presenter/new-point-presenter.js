@@ -1,4 +1,3 @@
-import {nanoid} from 'nanoid';
 import EditFormView from '../view/edit-form-view.js';
 import {
   render,
@@ -74,7 +73,7 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       USER_ACTION.ADD_POINT,
       UPDATE_TYPE.MINOR,
-      {id: nanoid(), ...point},
+      point,
     );
     this.destroy();
   };
