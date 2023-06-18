@@ -1,3 +1,4 @@
+import he from 'he';
 import {
   POINT_TYPE,
   MAX_DATE_TO,
@@ -166,7 +167,14 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${type}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-1">
+            <input id="event-destination-1"
+              class="event__input  event__input--destination"
+              type="text"
+              name="event-destination"
+              value="${he.encode(pointDestination.name)}"
+              list="destination-list-1"
+              required
+            >
             <datalist id="destination-list-1">
               ${createEditFormDestinationTemplate(allDestinations)}
             </datalist>
@@ -174,10 +182,22 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${timeFrom}">
+            <input id="event-start-time-1"
+              class="event__input  event__input--time"
+              type="text"
+              name="event-start-time"
+              value="${timeFrom}"
+              required
+            >
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${timeTo}">
+            <input id="event-end-time-1"
+              class="event__input  event__input--time"
+              type="text"
+              name="event-end-time"
+              value="${timeTo}"
+              required
+            >
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -185,7 +205,14 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="number" min="0" name="event-price" value="${basePrice}">
+            <input id="event-price-1"
+              class="event__input  event__input--price"
+              type="number"
+              min="0"
+              name="event-price"
+              value="${he.encode(basePrice.toString())}"
+              required
+            >
           </div>
 
           ${createEditFormButtonsTemplate(id === BLANK_POINT_ID)}
@@ -284,6 +311,10 @@ export default class EditFormView extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     const newDestination = getDestinationByName(this.#destinations, evt.target.value);
+    if (!newDestination) {
+      evt.target.value = '';
+      return;
+    }
     this.updateElement({
       destination: newDestination.id,
     });
