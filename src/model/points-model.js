@@ -25,6 +25,10 @@ export default class PointsModel extends Observable {
         this.#destinationsModel.init(),
       ]);
 
+      if(this.#offersModel.offers.length === 0 || this.#destinationsModel.destinations.length === 0){
+        throw new Error('Empty offers or destinations');
+      }
+
       const points = await this.#pointsApiService.points;
       this.#points = points.map(this.#adaptToClient);
     } catch(err) {
