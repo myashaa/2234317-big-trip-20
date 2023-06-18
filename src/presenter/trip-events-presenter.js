@@ -6,6 +6,7 @@ import {
   render,
   remove
 } from '../framework/render.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import TripPointPresenter from './trip-point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import {sort} from '../utils/sort.js';
@@ -14,6 +15,7 @@ import {FILTER_TYPE} from '../const/filter.js';
 import {
   USER_ACTION,
   UPDATE_TYPE,
+  TimeLimit
 } from '../const/common.js';
 import {filter} from '../utils/filter.js';
 
@@ -29,6 +31,10 @@ export default class TripEventsPresenter {
   #currentSortType = SORT_TYPE.DAY.name;
   #filterType = FILTER_TYPE.EVERYTHING;
   #isLoading = true;
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   #listComponent = new ListView();
   #sortComponent = null;
@@ -150,6 +156,7 @@ export default class TripEventsPresenter {
   }
 
   #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
     switch (actionType) {
       case USER_ACTION.UPDATE_POINT:
         this.#pointPresenters.get(update.id).setSaving();
@@ -176,6 +183,7 @@ export default class TripEventsPresenter {
         }
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {
