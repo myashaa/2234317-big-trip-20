@@ -1,4 +1,4 @@
-import {FILTER_TYPE} from '../const.js';
+import {FILTER_TYPE} from '../const/filter.js';
 import {
   isDateInFuture,
   isDateInPresent,

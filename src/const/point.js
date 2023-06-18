@@ -50,67 +50,11 @@ const DESTINATION_DESCRIPTION = [
   'In rutrum ac purus sit amet tempus.'
 ];
 
-const FILTER_TYPE = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
-  PRESENT: 'present',
-  PAST: 'past',
-};
-
-const NoPointsTextType = {
-  [FILTER_TYPE.EVERYTHING]: 'Click New Event to create your first point',
-  [FILTER_TYPE.FUTURE]: 'There are no future events now',
-  [FILTER_TYPE.PRESENT]: 'There are no present events now',
-  [FILTER_TYPE.PAST]: 'There are no past events now',
-};
-
-const MODE = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
-
-const SORT_TYPE = {
-  DAY: {
-    name: 'day',
-    enabled: true,
-  },
-  EVENT: {
-    name: 'event',
-    enabled: false,
-  },
-  TIME: {
-    name: 'time',
-    enabled: true,
-  },
-  PRICE: {
-    name: 'price',
-    enabled: true,
-  },
-  OFFERS: {
-    name: 'offers',
-    enabled: false,
-  },
-};
-
-const USER_ACTION = {
-  UPDATE_POINT: 'UPDATE_POINT',
-  ADD_POINT: 'ADD_POINT',
-  DELETE_POINT: 'DELETE_POINT',
-};
-
-const UPDATE_TYPE = {
-  PATCH: 'PATCH',
-  MINOR: 'MINOR',
-  MAJOR: 'MAJOR',
-};
-
-
 export {
   BLANK_POINT,
   BLANK_POINT_ID,
   DESTINATION_DESCRIPTION,
   DESTINATION_PHOTO_URL,
-  FILTER_TYPE,
   MIN_OFFER_PRICE,
   MIN_INDEX_OF_DESTINATION_PHOTO,
   MIN_POINT_PRICE,
@@ -118,11 +62,6 @@ export {
   MAX_INDEX_OF_DESTINATION_PHOTO,
   MAX_POINT_PRICE,
   MAX_DATE_TO,
-  MODE,
-  NoPointsTextType,
   POINT_COUNT,
-  POINT_TYPE,
-  SORT_TYPE,
-  USER_ACTION,
-  UPDATE_TYPE
+  POINT_TYPE
 };

@@ -8,12 +8,12 @@ import {
 import TripPointPresenter from './trip-point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import {sort} from '../utils/sort.js';
+import {SORT_TYPE} from '../const/sort.js';
+import {FILTER_TYPE} from '../const/filter.js';
 import {
-  SORT_TYPE,
   USER_ACTION,
   UPDATE_TYPE,
-  FILTER_TYPE
-} from '../const.js';
+} from '../const/common.js';
 import {filter} from '../utils/filter.js';
 
 export default class TripEventsPresenter {

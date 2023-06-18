@@ -4,7 +4,7 @@ import {
   MAX_DATE_TO,
   BLANK_POINT,
   BLANK_POINT_ID
-} from '../const.js';
+} from '../const/point.js';
 import {
   CURRENT_DATE,
   DATE_TIME_FORMAT,

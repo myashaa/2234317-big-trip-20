@@ -1,4 +1,4 @@
-import {UPDATE_TYPE} from '../const.js';
+import {UPDATE_TYPE} from '../const/common.js';
 import {
   render,
   replace,

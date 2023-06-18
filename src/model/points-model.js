@@ -1,4 +1,4 @@
-import {POINT_COUNT} from '../const.js';
+import {POINT_COUNT} from '../const/point.js';
 import {getRandomPoint} from '../mock/point.js';
 import Observable from '../framework/observable.js';
 

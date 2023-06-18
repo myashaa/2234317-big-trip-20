@@ -8,7 +8,7 @@ import {
 import {
   USER_ACTION,
   UPDATE_TYPE
-} from '../const.js';
+} from '../const/common.js';
 
 export default class NewPointPresenter {
   #pointListContainer = null;

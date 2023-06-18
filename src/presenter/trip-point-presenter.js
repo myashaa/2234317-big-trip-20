@@ -9,7 +9,7 @@ import {
   MODE,
   USER_ACTION,
   UPDATE_TYPE
-} from '../const.js';
+} from '../const/common.js';
 import {isDateEqual} from '../utils/date.js';
 import {isPriceEqual} from '../utils/point.js';
 

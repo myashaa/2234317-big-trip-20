@@ -2,7 +2,7 @@ import {
   getDateDifference,
   getTimeDifference
 } from '../utils/date.js';
-import {SORT_TYPE} from '../const.js';
+import {SORT_TYPE} from '../const/sort.js';
 
 function sortByDate(pointA, pointB) {
   return getDateDifference(pointA, pointB);
