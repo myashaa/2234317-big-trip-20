@@ -3,7 +3,17 @@ import {getRandomPoint} from '../mock/point.js';
 import Observable from '../framework/observable.js';
 
 export default class PointsModel extends Observable {
+  #pointsApiService = null;
   #points = Array.from({ length: POINT_COUNT }, getRandomPoint);
+
+  constructor({pointsApiService}) {
+    super();
+    this.#pointsApiService = pointsApiService;
+
+    this.#pointsApiService.points.then((points) => {
+      console.log(points);
+    });
+  }
 
   get points() {
     return this.#points;
