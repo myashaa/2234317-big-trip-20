@@ -1,6 +1,6 @@
 export default class OffersModel {
   #offersApiService = null;
-  #offers = null;
+  #offers = [];
 
   constructor({offersApiService}) {
     this.#offersApiService = offersApiService;

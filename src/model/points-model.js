@@ -3,7 +3,7 @@ import Observable from '../framework/observable.js';
 
 export default class PointsModel extends Observable {
   #pointsApiService = null;
-  #points = null;
+  #points = [];
 
   constructor({pointsApiService}) {
     super();

@@ -1,6 +1,6 @@
 export default class DestinationsModel {
   #destinationsApiService = null;
-  #destinations = null;
+  #destinations = [];
 
   constructor({destinationsApiService}) {
     this.#destinationsApiService = destinationsApiService;
