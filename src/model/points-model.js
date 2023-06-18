@@ -4,10 +4,14 @@ import Observable from '../framework/observable.js';
 export default class PointsModel extends Observable {
   #pointsApiService = null;
   #points = [];
+  #offersModel = null;
+  #destinationsModel = null;
 
-  constructor({pointsApiService}) {
+  constructor({pointsApiService, offersModel, destinationsModel}) {
     super();
     this.#pointsApiService = pointsApiService;
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
   }
 
   get points() {
@@ -16,6 +20,11 @@ export default class PointsModel extends Observable {
 
   async init() {
     try {
+      await Promise.all([
+        this.#offersModel.init(),
+        this.#destinationsModel.init(),
+      ]);
+
       const points = await this.#pointsApiService.points;
       this.#points = points.map(this.#adaptToClient);
     } catch(err) {

@@ -22,14 +22,16 @@ const tripMainElement = document.querySelector('.trip-main');
 const tripFiltersElement = document.querySelector('.trip-controls__filters');
 const tripEventsElement = document.querySelector('.trip-events');
 
-const pointsModel = new PointsModel({
-  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
-});
 const offersModel = new OffersModel({
   offersApiService: new OfferssApiService(END_POINT, AUTHORIZATION)
 });
 const destinationsModel = new DestinationsModel({
   destinationsApiService: new DestinationsApiService(END_POINT, AUTHORIZATION)
+});
+const pointsModel = new PointsModel({
+  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION),
+  offersModel,
+  destinationsModel
 });
 const filterModel = new FilterModel();
 
@@ -66,5 +68,3 @@ render(newPointButtonComponent, tripMainElement);
 filterPresenter.init();
 tripEventsPresenter.init();
 pointsModel.init();
-offersModel.init();
-destinationsModel.init();
