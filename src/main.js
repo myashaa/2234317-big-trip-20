@@ -62,9 +62,10 @@ function handleNewPointFormClose() {
   newPointButtonComponent.element.disabled = false;
 }
 
-render(new TripInfoView(), tripMainElement, RenderPosition.AFTERBEGIN);
-render(newPointButtonComponent, tripMainElement);
-
 filterPresenter.init();
 tripEventsPresenter.init();
-pointsModel.init();
+pointsModel.init()
+  .finally(() => {
+    render(new TripInfoView(), tripMainElement, RenderPosition.AFTERBEGIN);
+    render(newPointButtonComponent, tripMainElement);
+  });
