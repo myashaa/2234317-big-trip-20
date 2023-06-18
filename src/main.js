@@ -1,4 +1,5 @@
 import TripInfoView from './view/trip-info-view.js';
+import NewTripPointButtonView from './view/new-point-button-view.js';
 import {
   RenderPosition,
   render
@@ -24,13 +25,28 @@ const tripEventsPresenter = new TripEventsPresenter({
   offersModel,
   destinationsModel,
   filterModel,
+  onNewPointDestroy: handleNewPointFormClose
 });
 const filterPresenter = new FilterPresenter({
   filterContainer: tripFiltersElement,
   filterModel,
   pointsModel
 });
+const newPointButtonComponent = new NewTripPointButtonView({
+  onClick: handleNewPointButtonClick
+});
+
+function handleNewPointButtonClick() {
+  tripEventsPresenter.createPoint();
+  newPointButtonComponent.element.disabled = true;
+}
+
+function handleNewPointFormClose() {
+  newPointButtonComponent.element.disabled = false;
+}
 
 render(new TripInfoView(), tripMainElement, RenderPosition.AFTERBEGIN);
+render(newPointButtonComponent, tripMainElement);
+
 filterPresenter.init();
 tripEventsPresenter.init();

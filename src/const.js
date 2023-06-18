@@ -24,6 +24,18 @@ const POINT_TYPE = {
   RESTAURANT: 'Restaurant'
 };
 
+const BLANK_POINT_ID = '-1';
+const BLANK_POINT = {
+  id: BLANK_POINT_ID,
+  basePrice: '0',
+  dateFrom: new Date,
+  dateTo: new Date,
+  destination: '1',
+  isFavorite: false,
+  offers: [1],
+  type: POINT_TYPE.TAXI,
+};
+
 const DESTINATION_DESCRIPTION = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
@@ -94,6 +106,8 @@ const UPDATE_TYPE = {
 
 
 export {
+  BLANK_POINT,
+  BLANK_POINT_ID,
   DESTINATION_DESCRIPTION,
   DESTINATION_PHOTO_URL,
   FILTER_TYPE,

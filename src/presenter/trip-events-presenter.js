@@ -6,6 +6,7 @@ import {
   remove
 } from '../framework/render.js';
 import TripPointPresenter from './trip-point-presenter.js';
+import NewPointPresenter from './new-point-presenter.js';
 import {sort} from '../utils/sort.js';
 import {
   SORT_TYPE,
@@ -23,6 +24,7 @@ export default class TripEventsPresenter {
   #filterModel = null;
 
   #pointPresenters = new Map();
+  #newPointPresenter = null;
   #currentSortType = SORT_TYPE.DAY.name;
   #filterType = FILTER_TYPE.EVERYTHING;
 
@@ -30,12 +32,20 @@ export default class TripEventsPresenter {
   #sortComponent = null;
   #noPointComponent = null;
 
-  constructor({tripContainer, pointsModel, offersModel, destinationsModel, filterModel}) {
+  constructor({tripContainer, pointsModel, offersModel, destinationsModel, filterModel, onNewPointDestroy}) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#offersModel = offersModel;
     this.#destinationsModel = destinationsModel;
     this.#filterModel = filterModel;
+
+    this.#newPointPresenter = new NewPointPresenter({
+      offersModel: this.#offersModel,
+      destinationsModel: this.#destinationsModel,
+      pointListContainer: this.#listComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -54,6 +64,12 @@ export default class TripEventsPresenter {
     this.#renderRouteSheet();
   }
 
+  createPoint() {
+    this.#currentSortType = SORT_TYPE.DAY.name;
+    this.#filterModel.setFilter(UPDATE_TYPE.MAJOR, FILTER_TYPE.EVERYTHING);
+    this.#newPointPresenter.init();
+  }
+
   #renderRouteSheet() {
     if (this.points.length === 0) {
       this.#renderNoPoint();
@@ -66,6 +82,7 @@ export default class TripEventsPresenter {
   }
 
   #clearRouteSheet({resetSortType = false} = {}) {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
 
@@ -150,6 +167,7 @@ export default class TripEventsPresenter {
   };
 
   #handleModeChange = () => {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 

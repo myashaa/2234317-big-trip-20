@@ -1,6 +1,8 @@
 import {
   POINT_TYPE,
-  MAX_DATE_TO
+  MAX_DATE_TO,
+  BLANK_POINT,
+  BLANK_POINT_ID
 } from '../const.js';
 import {
   CURRENT_DATE,
@@ -48,14 +50,20 @@ function createEditFormOfferTemplate(pointOffers, offer) {
 }
 
 function createEditFormOffersTemplate(allOffers, pointOffers, pointType) {
-  const offerTemplate = getOffers(allOffers, pointType)
+  const offers = getOffers(allOffers, pointType);
+  const isHidden = offers.length === 0;
+
+  const offerTemplate = offers
     .map((offer) => createEditFormOfferTemplate(pointOffers, offer))
     .join('');
 
   return (`
-    <div class="event__available-offers">
-      ${offerTemplate}
-    </div>
+    <section class="event__section  event__section--offers ${isHidden ? 'visually-hidden' : ''}">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        ${offerTemplate}
+      </div>
+    </section>
   `);
 }
 
@@ -65,18 +73,24 @@ function createEditFormDestinationTemplate (allDestinations) {
   `).join('');
 }
 
-function createEditFormDestinationDescTemplate (pointDestination) {
-  const destinationImages = pointDestination.pictures.map((image) =>`
+function createEditFormDestinationDescTemplate(pointDestination) {
+  const {description, pictures} = pointDestination;
+  const isHidden = description === '' && pictures.length === 0;
+
+  const destinationImages = pictures.map((image) =>`
     <img class="event__photo" src="${image.src}" alt="${image.description}">
   `).join('');
 
   return (`
-    <p class="event__destination-description">${pointDestination.description}</p>
-    <div class="event__photos-container">
-      <div class="event__photos-tape">
-        ${destinationImages}
+    <section class="event__section  event__section--destination ${isHidden ? 'visually-hidden' : ''}">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      <p class="event__destination-description">${description}</p>
+      <div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${destinationImages}
+        </div>
       </div>
-    </div>
+    </section>
   `);
 }
 
@@ -115,8 +129,18 @@ function createEditFormTypesTemplate(pointType) {
   `);
 }
 
+function createEditFormButtonsTemplate(isCreating) {
+  return (`
+    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+    <button class="event__reset-btn" type="reset">${isCreating ? 'Cancel' : 'Delete'}</button>
+    <button class="event__rollup-btn" ${isCreating ? 'style="display:none;"' : ''} type="button">
+      <span class="visually-hidden">Open event</span>
+    </button>
+  `);
+}
+
 function createEditFormTemplate(point, allOffers, allDestinations) {
-  const {basePrice, dateFrom, dateTo, destination, offers, type} = point;
+  const {id, basePrice, dateFrom, dateTo, destination, offers, type} = point;
 
   const pointDestination = getDestinationById(allDestinations, destination);
   const timeFrom = humanizeDate(dateFrom, DATE_TIME_FORMAT);
@@ -164,22 +188,12 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
             <input class="event__input  event__input--price" id="event-price-1" type="number" min="0" name="event-price" value="${basePrice}">
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
-          </button>
+          ${createEditFormButtonsTemplate(id === BLANK_POINT_ID)}
         </header>
         <section class="event__details">
-          <section class="event__section  event__section--offers">
-            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            ${createEditFormOffersTemplate(allOffers, offers, type)}
-          </section>
+          ${createEditFormOffersTemplate(allOffers, offers, type)}
 
-          <section class="event__section  event__section--destination">
-            <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-            ${createEditFormDestinationDescTemplate(getDestinationById(allDestinations, destination))}
-          </section>
+          ${createEditFormDestinationDescTemplate(getDestinationById(allDestinations, destination))}
         </section>
       </form>
     </li>
@@ -195,7 +209,7 @@ export default class EditFormView extends AbstractStatefulView {
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({point, offers, destinations, onFormSubmit, onRollUpClick, onDeleteClick}) {
+  constructor({point = BLANK_POINT, offers, destinations, onFormSubmit, onRollUpClick, onDeleteClick}) {
     super();
     this._setState(EditFormView.parsePointToState(point));
     this.#offers = offers;
