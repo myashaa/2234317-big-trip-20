@@ -34,14 +34,14 @@ function createEditFormOfferTemplate(pointOffers, offer) {
 
   return (`
     <div class="event__offer-selector">
-      <input id="event-offer-${insertDashIntoStr(title)}"
+      <input id="event-offer-${id}"
         class="event__offer-checkbox  visually-hidden"
         type="checkbox"
         name="event-offer-${insertDashIntoStr(title)}"
         data-offer-id="${id}"
         ${checked}
       >
-      <label class="event__offer-label" for="event-offer-${insertDashIntoStr(title)}">
+      <label class="event__offer-label" for="event-offer-${id}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${price}</span>
@@ -100,15 +100,15 @@ function createEditFormTypeTemplate(pointType, type) {
 
   return (`
     <div class="event__type-item">
-      <input id="event-type-${type.toLowerCase()}"
+      <input id="event-type-${type}"
         class="event__type-input  visually-hidden"
         type="radio"
         name="event-type"
-        value="${type.toLowerCase()}"
+        value="${type}"
         ${checked}
       >
-      <label class="event__type-label  event__type-label--${type.toLowerCase()}"
-        for="event-type-${type.toLowerCase()}"
+      <label class="event__type-label  event__type-label--${type}"
+        for="event-type-${type}"
         data-type="${type}"
       >
         ${type}
@@ -154,7 +154,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -208,7 +208,7 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
             <input id="event-price-1"
               class="event__input  event__input--price"
               type="number"
-              min="0"
+              min="1"
               name="event-price"
               value="${he.encode(basePrice.toString())}"
               required
