@@ -3,7 +3,7 @@ import {
   MIN_POINT_PRICE,
   MAX_POINT_PRICE,
   POINT_TYPE
-} from '../const.js';
+} from '../const/point.js';
 import {
   getRandomInteger,
   getRandomArrayElement

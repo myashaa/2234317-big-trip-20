@@ -2,7 +2,7 @@ import {
   POINT_TYPE,
   MIN_OFFER_PRICE,
   MAX_OFFER_PRICE
-} from '../const.js';
+} from '../const/point.js';
 import {getRandomInteger} from '../utils/common.js';
 
 const mockOffers = [

@@ -24,6 +24,18 @@ const POINT_TYPE = {
   RESTAURANT: 'Restaurant'
 };
 
+const BLANK_POINT_ID = '-1';
+const BLANK_POINT = {
+  id: BLANK_POINT_ID,
+  basePrice: '0',
+  dateFrom: new Date,
+  dateTo: new Date,
+  destination: '1',
+  isFavorite: false,
+  offers: [1],
+  type: POINT_TYPE.TAXI,
+};
+
 const DESTINATION_DESCRIPTION = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
@@ -38,45 +50,11 @@ const DESTINATION_DESCRIPTION = [
   'In rutrum ac purus sit amet tempus.'
 ];
 
-const FILTER_TYPE = {
-  EVERYTHING: 'Everything',
-  FUTURE: 'Future',
-  PRESENT: 'Present',
-  PAST: 'Past',
-};
-
-const MODE = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
-
-const SORT_TYPE = {
-  DAY: {
-    name: 'day',
-    enabled: true,
-  },
-  EVENT: {
-    name: 'event',
-    enabled: false,
-  },
-  TIME: {
-    name: 'time',
-    enabled: true,
-  },
-  PRICE: {
-    name: 'price',
-    enabled: true,
-  },
-  OFFERS: {
-    name: 'offers',
-    enabled: false,
-  },
-};
-
 export {
+  BLANK_POINT,
+  BLANK_POINT_ID,
   DESTINATION_DESCRIPTION,
   DESTINATION_PHOTO_URL,
-  FILTER_TYPE,
   MIN_OFFER_PRICE,
   MIN_INDEX_OF_DESTINATION_PHOTO,
   MIN_POINT_PRICE,
@@ -84,8 +62,6 @@ export {
   MAX_INDEX_OF_DESTINATION_PHOTO,
   MAX_POINT_PRICE,
   MAX_DATE_TO,
-  MODE,
   POINT_COUNT,
-  POINT_TYPE,
-  SORT_TYPE
+  POINT_TYPE
 };

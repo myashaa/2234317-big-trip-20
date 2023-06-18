@@ -3,7 +3,7 @@ import {
   DESTINATION_PHOTO_URL,
   MIN_INDEX_OF_DESTINATION_PHOTO,
   MAX_INDEX_OF_DESTINATION_PHOTO
-} from '../const.js';
+} from '../const/point.js';
 import {
   getRandomInteger,
   getRandomArrayElement

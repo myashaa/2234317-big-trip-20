@@ -5,10 +5,18 @@ import {
   replace,
   remove
 } from '../framework/render.js';
-import {MODE} from '../const.js';
+import {
+  MODE,
+  USER_ACTION,
+  UPDATE_TYPE
+} from '../const/common.js';
+import {isDateEqual} from '../utils/date.js';
+import {isPriceEqual} from '../utils/point.js';
 
 export default class TripPointPresenter {
   #pointContainer = null;
+  #offersModel = null;
+  #destinationsModel = null;
   #handleDataChange = null;
   #handleModeChange = null;
 
@@ -20,16 +28,18 @@ export default class TripPointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
 
-  constructor({pointContainer, offers, destinations, onDataChange, onModeChange}) {
+  constructor({pointContainer, offersModel, destinationsModel, onDataChange, onModeChange}) {
     this.#pointContainer = pointContainer;
-    this.#offers = offers;
-    this.#destinations = destinations;
+    this.#offersModel = offersModel;
+    this.#destinationsModel = destinationsModel;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
   }
 
   init(point) {
     this.#point = point;
+    this.#offers = [...this.#offersModel.offers];
+    this.#destinations = [...this.#destinationsModel.destinations];
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
@@ -47,6 +57,7 @@ export default class TripPointPresenter {
       destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
       onRollUpClick: this.#handleRollUpClick,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -103,16 +114,38 @@ export default class TripPointPresenter {
     this.#replacePointToForm();
   };
 
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate =
+      !isDateEqual(this.#point.dateFrom, update.dateFrom) ||
+      !isDateEqual(this.#point.dateTo, update.dateTo) ||
+      !isPriceEqual(this.#point.basePrice, update.basePrice);
+
+    this.#handleDataChange(
+      USER_ACTION.UPDATE_POINT,
+      isMinorUpdate ? UPDATE_TYPE.MINOR : UPDATE_TYPE.PATCH,
+      update,
+    );
     this.#replaceFormToPoint();
   };
 
   #handleRollUpClick = () => {
+    this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToPoint();
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange(
+      USER_ACTION.UPDATE_POINT,
+      UPDATE_TYPE.PATCH,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      USER_ACTION.DELETE_POINT,
+      UPDATE_TYPE.MINOR,
+      point,
+    );
   };
 }
