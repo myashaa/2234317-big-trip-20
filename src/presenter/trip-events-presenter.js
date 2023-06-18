@@ -1,6 +1,7 @@
 import SortView from '../view/sort-view.js';
 import ListView from '../view/list-view.js';
 import NoTripPointView from '../view/no-point-view.js';
+import LoadingView from '../view/loading-view.js';
 import {
   render,
   remove
@@ -27,10 +28,12 @@ export default class TripEventsPresenter {
   #newPointPresenter = null;
   #currentSortType = SORT_TYPE.DAY.name;
   #filterType = FILTER_TYPE.EVERYTHING;
+  #isLoading = true;
 
   #listComponent = new ListView();
   #sortComponent = null;
   #noPointComponent = null;
+  #loadingComponent = new LoadingView();
 
   constructor({tripContainer, pointsModel, offersModel, destinationsModel, filterModel, onNewPointDestroy}) {
     this.#tripContainer = tripContainer;
@@ -71,6 +74,11 @@ export default class TripEventsPresenter {
   }
 
   #renderRouteSheet() {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     if (this.points.length === 0) {
       this.#renderNoPoint();
       return;
@@ -87,6 +95,7 @@ export default class TripEventsPresenter {
     this.#pointPresenters.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
@@ -95,6 +104,10 @@ export default class TripEventsPresenter {
     if (resetSortType) {
       this.#currentSortType = SORT_TYPE.DAY.name;
     }
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#tripContainer);
   }
 
   #renderSort() {
@@ -161,6 +174,11 @@ export default class TripEventsPresenter {
         break;
       case UPDATE_TYPE.MAJOR:
         this.#clearRouteSheet({resetSortType: true});
+        this.#renderRouteSheet();
+        break;
+      case UPDATE_TYPE.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderRouteSheet();
         break;
     }
