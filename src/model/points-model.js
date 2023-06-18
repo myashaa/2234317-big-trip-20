@@ -1,22 +1,25 @@
-import {POINT_COUNT} from '../const/point.js';
-import {getRandomPoint} from '../mock/point.js';
 import Observable from '../framework/observable.js';
 
 export default class PointsModel extends Observable {
   #pointsApiService = null;
-  #points = Array.from({ length: POINT_COUNT }, getRandomPoint);
+  #points = null;
 
   constructor({pointsApiService}) {
     super();
     this.#pointsApiService = pointsApiService;
-
-    this.#pointsApiService.points.then((points) => {
-      console.log(points.map(this.#adaptToClient));
-    });
   }
 
   get points() {
     return this.#points;
+  }
+
+  async init() {
+    try {
+      const points = await this.#pointsApiService.points;
+      this.#points = points.map(this.#adaptToClient);
+    } catch(err) {
+      this.#points = [];
+    }
   }
 
   addPoint(updateType, update) {

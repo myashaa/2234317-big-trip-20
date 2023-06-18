@@ -65,3 +65,6 @@ render(newPointButtonComponent, tripMainElement);
 
 filterPresenter.init();
 tripEventsPresenter.init();
+pointsModel.init();
+offersModel.init();
+destinationsModel.init();
