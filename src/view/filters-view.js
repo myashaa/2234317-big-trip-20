@@ -5,15 +5,15 @@ function createFilterTemplate(filter, isChecked) {
 
   return (`
     <div class="trip-filters__filter">
-      <input id="filter-${type.toLowerCase()}"
+      <input id="filter-${type}"
         class="trip-filters__filter-input visually-hidden"
         type="radio"
         name="trip-filter"
-        value="${type.toLowerCase()}"
+        value="${type}"
         ${isChecked ? 'checked' : ''}
         ${hasPoints ? '' : 'disabled'}
       >
-      <label class="trip-filters__filter-label" for="filter-${type.toLowerCase()}">${type}</label>
+      <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
     </div>
   `);
 }
