@@ -6,7 +6,7 @@ import {
 } from '../utils/date.js';
 import {
   getDestinationById,
-  //getOffers
+  getOffers
 } from '../utils/point.js';
 import {SortType} from '../const/sort.js';
 import {POINT_COUNT_IN_ROUTE} from '../const/point.js';
@@ -31,6 +31,18 @@ function getTripPoints(points, destinations) {
   return tripPoints;
 }
 
+function getOfferPrice(id, point, offers) {
+  return getOffers(offers, point.type).find((offer) => offer.id === id).price;
+}
+
+function getOffersPrice(point, offers) {
+  return point.offers.reduce((sum, id) => sum + getOfferPrice(id, point, offers), 0);
+}
+
+function getTotalPrice(points, offers) {
+  return points.reduce((sum, point) => sum + point.basePrice + getOffersPrice(point, offers), 0);
+}
+
 function createTripInfoTemplate(points, offers, destinations) {
   if (points.length === 0) {
     return (`
@@ -46,7 +58,7 @@ function createTripInfoTemplate(points, offers, destinations) {
   const dateFrom = humanizeDate(startPoint.dateFrom, INFO_FORMAT);
   const dateTo = humanizeDate(endPoint.dateTo, INFO_FORMAT);
   const tripPoints = getTripPoints(points, destinations);
-  const totalPrice = 0;
+  const totalPrice = getTotalPrice(points, offers);
 
   return (`
     <section class="trip-main__trip-info  trip-info">
