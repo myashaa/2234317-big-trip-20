@@ -1,4 +1,4 @@
-import FiltersView from '../view/filters-view';
+import FiltersView from '../view/filters-view.js';
 import {
   render,
   replace,
