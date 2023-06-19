@@ -1,4 +1,5 @@
 const MAX_DATE_TO = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+const POINT_COUNT_IN_ROUTE = 3;
 
 const PointType = {
   TAXI: 'taxi',
@@ -28,5 +29,6 @@ export {
   BLANK_POINT,
   BLANK_POINT_ID,
   MAX_DATE_TO,
+  POINT_COUNT_IN_ROUTE,
   PointType
 };
