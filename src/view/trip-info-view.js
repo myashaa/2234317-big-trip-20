@@ -33,7 +33,10 @@ function getTripPoints(points, destinations) {
 
 function createTripInfoTemplate(points, offers, destinations) {
   if (points.length === 0) {
-    return '';
+    return (`
+    <section class="trip-main__trip-info  trip-info">
+    </section>
+  `);
   }
 
   sort(points, SortType.DAY.NAME);

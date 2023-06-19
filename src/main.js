@@ -67,7 +67,7 @@ function handleNewPointFormClose() {
 
 filterPresenter.init();
 tripEventsPresenter.init();
-//tripInfoPresenter.init();
+tripInfoPresenter.init();
 pointsModel.init()
   .finally(() => {
     render(newPointButtonComponent, tripMainElement);
