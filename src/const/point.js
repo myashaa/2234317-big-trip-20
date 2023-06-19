@@ -1,6 +1,6 @@
 const MAX_DATE_TO = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
 
-const POINT_TYPE = {
+const PointType = {
   TAXI: 'taxi',
   BUS: 'bus',
   TRAIN: 'train',
@@ -21,12 +21,12 @@ const BLANK_POINT = {
   destination: '',
   isFavorite: false,
   offers: [],
-  type: POINT_TYPE.TAXI,
+  type: PointType.TAXI
 };
 
 export {
   BLANK_POINT,
   BLANK_POINT_ID,
   MAX_DATE_TO,
-  POINT_TYPE
+  PointType
 };

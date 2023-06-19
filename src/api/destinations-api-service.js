@@ -1,5 +1,5 @@
-import {Url} from '../const/api.js';
 import ApiService from '../framework/api-service.js';
+import {Url} from '../const/api.js';
 
 export default class DestinationsApiService extends ApiService {
   get destinations() {

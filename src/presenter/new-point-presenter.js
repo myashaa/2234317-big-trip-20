@@ -5,8 +5,8 @@ import {
   remove
 } from '../framework/render.js';
 import {
-  USER_ACTION,
-  UPDATE_TYPE
+  UserAction,
+  UpdateType
 } from '../const/common.js';
 
 export default class NewPointPresenter {
@@ -65,7 +65,7 @@ export default class NewPointPresenter {
   setSaving() {
     this.#pointEditComponent.updateElement({
       isDisabled: true,
-      isSaving: true,
+      isSaving: true
     });
   }
 
@@ -74,7 +74,7 @@ export default class NewPointPresenter {
       this.#pointEditComponent.updateElement({
         isDisabled: false,
         isSaving: false,
-        isDeleting: false,
+        isDeleting: false
       });
     };
 
@@ -90,9 +90,9 @@ export default class NewPointPresenter {
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
-      USER_ACTION.ADD_POINT,
-      UPDATE_TYPE.MINOR,
-      point,
+      UserAction.ADD_POINT,
+      UpdateType.MINOR,
+      point
     );
   };
 

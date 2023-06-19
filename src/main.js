@@ -1,9 +1,5 @@
 import TripInfoView from './view/trip-info-view.js';
-import NewTripPointButtonView from './view/new-point-button-view.js';
-import {
-  RenderPosition,
-  render
-} from './framework/render.js';
+import NewPointButtonView from './view/new-point-button-view.js';
 import TripEventsPresenter from './presenter/trip-events-presenter.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
@@ -13,6 +9,10 @@ import FilterModel from './model/filter-model.js';
 import PointsApiService from './api/points-api-service.js';
 import OfferssApiService from './api/offers-api-service.js';
 import DestinationsApiService from './api/destinations-api-service.js';
+import {
+  RenderPosition,
+  render
+} from './framework/render.js';
 import {
   AUTHORIZATION,
   END_POINT
@@ -49,7 +49,7 @@ const filterPresenter = new FilterPresenter({
   pointsModel
 });
 
-const newPointButtonComponent = new NewTripPointButtonView({
+const newPointButtonComponent = new NewPointButtonView({
   onClick: handleNewPointButtonClick
 });
 

@@ -1,24 +1,24 @@
-const SORT_TYPE = {
+const SortType = {
   DAY: {
-    name: 'day',
-    enabled: true,
+    NAME: 'day',
+    ENABLED: true
   },
   EVENT: {
-    name: 'event',
-    enabled: false,
+    NAME: 'event',
+    ENABLED: false
   },
   TIME: {
-    name: 'time',
-    enabled: true,
+    NAME: 'time',
+    ENABLED: true
   },
   PRICE: {
-    name: 'price',
-    enabled: true,
+    NAME: 'price',
+    ENABLED: true
   },
   OFFERS: {
-    name: 'offers',
-    enabled: false,
-  },
+    NAME: 'offers',
+    ENABLED: false
+  }
 };
 
-export {SORT_TYPE};
+export {SortType};

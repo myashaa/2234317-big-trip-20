@@ -1,23 +1,23 @@
+import AbstractView from '../framework/view/abstract-view.js';
 import {
   DATE_FORMAT,
   TIME_FORMAT,
   humanizeDate,
   getDuration
 } from '../utils/date.js';
-import AbstractView from '../framework/view/abstract-view.js';
 
-function getDestination (allDestinations, pointDestination) {
+function getDestination(allDestinations, pointDestination) {
   const choosenDestination = allDestinations.find((item) => pointDestination.includes(item.id));
   return choosenDestination.name;
 }
 
-function getOffers (allOffers, pointOffers, pointType) {
+function getOffers(allOffers, pointOffers, pointType) {
   const pointTypeOffers = allOffers.find((item) => item.type === pointType).offers;
   const choosenOffers = pointTypeOffers.filter((item) => pointOffers.includes(item.id));
   return choosenOffers;
 }
 
-function createTripPointOfferTemplate(offer) {
+function createPointOfferTemplate(offer) {
   const {title, price} = offer;
 
   return (`
@@ -29,9 +29,9 @@ function createTripPointOfferTemplate(offer) {
   `);
 }
 
-function createTripPointOffersTemplate(allOffers, pointOffers, pointType) {
+function createPointOffersTemplate(allOffers, pointOffers, pointType) {
   const offerTemplate = getOffers(allOffers, pointOffers, pointType)
-    .map((offer) => createTripPointOfferTemplate(offer))
+    .map((offer) => createPointOfferTemplate(offer))
     .join('');
 
   return (`
@@ -41,15 +41,13 @@ function createTripPointOffersTemplate(allOffers, pointOffers, pointType) {
   `);
 }
 
-function createTripPointTemplate (point, allOffers, allDestinations) {
+function createPointTemplate(point, allOffers, allDestinations) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, offers, type} = point;
 
   const date = humanizeDate(dateFrom, DATE_FORMAT);
   const timeFrom = humanizeDate(dateFrom, TIME_FORMAT);
   const timeTo = humanizeDate(dateTo, TIME_FORMAT);
   const duration = getDuration(dateFrom, dateTo);
-
-  const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
 
   return (`
     <li class="trip-events__item">
@@ -71,8 +69,8 @@ function createTripPointTemplate (point, allOffers, allDestinations) {
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-        ${createTripPointOffersTemplate(allOffers, offers, type)}
-        <button class="event__favorite-btn ${favoriteClass}" type="button">
+        ${createPointOffersTemplate(allOffers, offers, type)}
+        <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
             <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -86,14 +84,14 @@ function createTripPointTemplate (point, allOffers, allDestinations) {
   `);
 }
 
-export default class TripPointView extends AbstractView {
+export default class PointView extends AbstractView {
   #point = null;
   #offers = null;
   #destinations = null;
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
-  constructor({ point, offers, destinations, onEditClick, onFavoriteClick }) {
+  constructor({point, offers, destinations, onEditClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#offers = offers;
@@ -108,7 +106,7 @@ export default class TripPointView extends AbstractView {
   }
 
   get template() {
-    return createTripPointTemplate(this.#point, this.#offers, this.#destinations);
+    return createPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 
   #editClickHandler = (evt) => {

@@ -1,5 +1,5 @@
-import {UPDATE_TYPE} from '../const/common.js';
 import Observable from '../framework/observable.js';
+import {UpdateType} from '../const/common.js';
 
 export default class PointsModel extends Observable {
   #pointsApiService = null;
@@ -25,7 +25,7 @@ export default class PointsModel extends Observable {
         this.#destinationsModel.init(),
       ]);
 
-      if(this.#offersModel.offers.length === 0 || this.#destinationsModel.destinations.length === 0){
+      if (this.#offersModel.offers.length === 0 || this.#destinationsModel.destinations.length === 0) {
         throw new Error('Empty offers or destinations');
       }
 
@@ -35,7 +35,7 @@ export default class PointsModel extends Observable {
       this.#points = [];
     }
 
-    this._notify(UPDATE_TYPE.INIT);
+    this._notify(UpdateType.INIT);
   }
 
   async addPoint(updateType, update) {
@@ -63,10 +63,12 @@ export default class PointsModel extends Observable {
 
     try {
       await this.#pointsApiService.deletePoint(update);
+
       this.#points = [
         ...this.#points.slice(0, index),
         ...this.#points.slice(index + 1),
       ];
+
       this._notify(updateType);
     } catch(err) {
       throw new Error('Can\'t delete point');
