@@ -9,23 +9,16 @@ import {
   humanizeDate
 } from '../utils/date.js';
 import {
+  getDestinationById,
+  getDestinationByName,
+  getOffers
+} from '../utils/point.js';
+import {
   PointType,
   MAX_DATE_TO,
   BLANK_POINT,
   BLANK_POINT_ID
 } from '../const/point.js';
-
-function getDestinationById(allDestinations, pointDestination) {
-  return allDestinations.find((item) => pointDestination.includes(item.id));
-}
-
-function getDestinationByName(allDestinations, pointDestination) {
-  return allDestinations.find((item) => pointDestination.includes(item.name));
-}
-
-function getOffers(allOffers, pointType) {
-  return allOffers.find((item) => item.type === pointType).offers;
-}
 
 function createEditFormOfferTemplate(pointOffers, offer, isDisabled) {
   const {id, title, price} = offer;

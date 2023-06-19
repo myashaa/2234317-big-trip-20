@@ -5,14 +5,18 @@ import {
   humanizeDate,
   getDuration
 } from '../utils/date.js';
+import {
+  getDestinationById,
+  getOffers
+} from '../utils/point.js';
 
-function getDestination(allDestinations, pointDestination) {
-  const choosenDestination = allDestinations.find((item) => pointDestination.includes(item.id));
+function getPointDestination(allDestinations, pointDestination) {
+  const choosenDestination = getDestinationById(allDestinations, pointDestination);
   return choosenDestination.name;
 }
 
-function getOffers(allOffers, pointOffers, pointType) {
-  const pointTypeOffers = allOffers.find((item) => item.type === pointType).offers;
+function getPointOffers(allOffers, pointOffers, pointType) {
+  const pointTypeOffers = getOffers(allOffers, pointType);
   const choosenOffers = pointTypeOffers.filter((item) => pointOffers.includes(item.id));
   return choosenOffers;
 }
@@ -30,7 +34,7 @@ function createPointOfferTemplate(offer) {
 }
 
 function createPointOffersTemplate(allOffers, pointOffers, pointType) {
-  const offerTemplate = getOffers(allOffers, pointOffers, pointType)
+  const offerTemplate = getPointOffers(allOffers, pointOffers, pointType)
     .map((offer) => createPointOfferTemplate(offer))
     .join('');
 
@@ -56,7 +60,7 @@ function createPointTemplate(point, allOffers, allDestinations) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} ${getDestination(allDestinations, destination)}</h3>
+        <h3 class="event__title">${type} ${getPointDestination(allDestinations, destination)}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime=${dateFrom}>${timeFrom}</time>
