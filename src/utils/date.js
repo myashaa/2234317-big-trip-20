@@ -8,6 +8,7 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 const CURRENT_DATE = new Date();
+const INFO_FORMAT = 'DD MMM';
 const DATE_FORMAT = 'MMM DD';
 const TIME_FORMAT = 'HH:mm';
 const DATE_TIME_FORMAT = 'DD/MM/YY HH:mm';
@@ -18,11 +19,11 @@ const TIME_IN_DAY_HOUR_MIN = 'DD[d] HH[h] mm[m]';
 const COUNT_OF_MS_IN_DAY = 86400000;
 const COUNT_OF_MS_IN_HOUR = 3600000;
 
-function humanizeDate (date, format) {
+function humanizeDate(date, format) {
   return date ? dayjs(date).format(format) : '';
 }
 
-function getDuration (dateFrom, dateTo) {
+function getDuration(dateFrom, dateTo) {
   const difference = dayjs(dateTo).diff(dateFrom);
   const differenceInMs = dayjs.duration(difference).$ms;
   let format = TIME_IN_MIN;
@@ -36,7 +37,7 @@ function getDuration (dateFrom, dateTo) {
   return dayjs.duration(difference).format(format);
 }
 
-function isDateInFuture (date) {
+function isDateInFuture(date) {
   return dayjs().isBefore(date, 'D');
 }
 
@@ -47,7 +48,7 @@ function isDateInPresent(dateFrom, dateTo) {
   return isDateFromSameOrInPast && isDateToSameOrInFuture;
 }
 
-function isDateInPast (date) {
+function isDateInPast(date) {
   return dayjs().isAfter(date, 'D');
 }
 
@@ -55,11 +56,11 @@ function isDateEqual(dateA, dateB) {
   return dayjs(dateA).isSame(dateB, 'm');
 }
 
-function getDateDifference (pointA, pointB) {
+function getDateDifference(pointA, pointB) {
   return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 }
 
-function getTimeDifference (pointA, pointB) {
+function getTimeDifference(pointA, pointB) {
   const pointAdifference = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
   const pointBdifference = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
 
@@ -68,6 +69,7 @@ function getTimeDifference (pointA, pointB) {
 
 export {
   CURRENT_DATE,
+  INFO_FORMAT,
   DATE_FORMAT,
   TIME_FORMAT,
   DATE_TIME_FORMAT,

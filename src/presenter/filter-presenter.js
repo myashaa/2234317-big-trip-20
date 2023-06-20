@@ -1,11 +1,11 @@
-import {UPDATE_TYPE} from '../const/common.js';
+import FiltersView from '../view/filters-view.js';
 import {
   render,
   replace,
   remove
 } from '../framework/render.js';
-import FiltersView from '../view/filters-view';
 import {filter} from '../utils/filter.js';
+import {UpdateType} from '../const/common.js';
 
 export default class FilterPresenter {
   #filterContainer = null;
@@ -29,7 +29,7 @@ export default class FilterPresenter {
     return Object.entries(filter).map(
       ([filterType, filterPoints]) => ({
         type: filterType,
-        hasPoints: filterPoints(points).length > 0,
+        hasPoints: filterPoints(points).length > 0
       }),
     );
   }
@@ -41,7 +41,7 @@ export default class FilterPresenter {
     this.#filterComponent = new FiltersView({
       filters,
       currentFilterType: this.#filterModel.filter,
-      onFilterTypeChange: this.#handleFilterTypeChange,
+      onFilterTypeChange: this.#handleFilterTypeChange
     });
 
     if (prevFilterComponent === null) {
@@ -62,6 +62,6 @@ export default class FilterPresenter {
       return;
     }
 
-    this.#filterModel.setFilter(UPDATE_TYPE.MAJOR, filterType);
+    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
   };
 }

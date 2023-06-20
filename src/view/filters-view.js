@@ -26,7 +26,6 @@ function createFiltersTemplate(filters, currentFilterType) {
   return (`
     <form class="trip-filters" action="#" method="get">
       ${filterTemplate}
-
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
   `);

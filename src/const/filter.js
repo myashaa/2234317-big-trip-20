@@ -1,18 +1,18 @@
-const FILTER_TYPE = {
+const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
-  PAST: 'past',
+  PAST: 'past'
 };
 
 const NoPointsTextType = {
-  [FILTER_TYPE.EVERYTHING]: 'Click New Event to create your first point',
-  [FILTER_TYPE.FUTURE]: 'There are no future events now',
-  [FILTER_TYPE.PRESENT]: 'There are no present events now',
-  [FILTER_TYPE.PAST]: 'There are no past events now',
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.PAST]: 'There are no past events now'
 };
 
 export {
-  FILTER_TYPE,
+  FilterType,
   NoPointsTextType
 };

@@ -1,15 +1,13 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {NoPointsTextType} from '../const/filter.js';
 
-function createNoTripPointTemplate(filterType) {
-  const noPointTextValue = NoPointsTextType[filterType];
-
+function createNoPointTemplate(filterType) {
   return (`
-    <p class="trip-events__msg">${noPointTextValue}</p>
+    <p class="trip-events__msg">${NoPointsTextType[filterType]}</p>
   `);
 }
 
-export default class NoTripPointView extends AbstractView {
+export default class NoPointView extends AbstractView {
   #filterType = null;
 
   constructor({filterType}) {
@@ -18,6 +16,6 @@ export default class NoTripPointView extends AbstractView {
   }
 
   get template() {
-    return createNoTripPointTemplate(this.#filterType);
+    return createNoPointTemplate(this.#filterType);
   }
 }

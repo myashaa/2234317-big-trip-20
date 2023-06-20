@@ -1,28 +1,28 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {SORT_TYPE} from '../const/sort.js';
+import {SortType} from '../const/sort.js';
 
 function createSortItemTemplate(item, isChecked) {
-  const {name, enabled} = item;
+  const {NAME, ENABLED} = item;
 
   return (`
-    <div class="trip-sort__item  trip-sort__item--${name}">
-      <input id="sort-${name}"
+    <div class="trip-sort__item  trip-sort__item--${NAME}">
+      <input id="sort-${NAME}"
         class="trip-sort__input  visually-hidden"
         type="radio"
         name="trip-sort"
-        value="sort-${name}"
-        data-sort-type="${name}"
+        value="sort-${NAME}"
+        data-sort-type="${NAME}"
         ${isChecked ? 'checked' : ''}
-        ${enabled ? '' : 'disabled'}
+        ${ENABLED ? '' : 'disabled'}
       >
-      <label class="trip-sort__btn" for="sort-${name}">${name}</label>
+      <label class="trip-sort__btn" for="sort-${NAME}">${NAME}</label>
     </div>
   `);
 }
 
 function createSortTemplate(currentSortType) {
-  const sortTemplate = Object.values(SORT_TYPE)
-    .map((item) => createSortItemTemplate(item, item.name === currentSortType))
+  const sortTemplate = Object.values(SortType)
+    .map((item) => createSortItemTemplate(item, item.NAME === currentSortType))
     .join('');
 
   return (`

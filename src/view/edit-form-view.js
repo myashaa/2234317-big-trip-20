@@ -1,32 +1,24 @@
 import he from 'he';
-import {
-  POINT_TYPE,
-  MAX_DATE_TO,
-  BLANK_POINT,
-  BLANK_POINT_ID
-} from '../const/point.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import {insertDashIntoStr} from '../utils/common.js';
 import {
   CURRENT_DATE,
   DATE_TIME_FORMAT,
   humanizeDate
 } from '../utils/date.js';
-import {insertDashIntoStr} from '../utils/common.js';
-import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import flatpickr from 'flatpickr';
-
-import 'flatpickr/dist/flatpickr.min.css';
-
-function getDestinationById (allDestinations, pointDestination) {
-  return allDestinations.find((item) => pointDestination.includes(item.id));
-}
-
-function getDestinationByName (allDestinations, pointDestination) {
-  return allDestinations.find((item) => pointDestination.includes(item.name));
-}
-
-function getOffers(allOffers, pointType) {
-  return allOffers.find((item) => item.type === pointType).offers;
-}
+import {
+  getDestinationById,
+  getDestinationByName,
+  getOffers
+} from '../utils/point.js';
+import {
+  PointType,
+  MAX_DATE_TO,
+  BLANK_POINT,
+  BLANK_POINT_ID
+} from '../const/point.js';
 
 function createEditFormOfferTemplate(pointOffers, offer, isDisabled) {
   const {id, title, price} = offer;
@@ -69,7 +61,7 @@ function createEditFormOffersTemplate(allOffers, pointOffers, pointType, isDisab
   `);
 }
 
-function createEditFormDestinationTemplate (allDestinations) {
+function createEditFormDestinationTemplate(allDestinations) {
   return allDestinations.map((destination) => `
     <option value="${destination.name}"></option>
   `).join('');
@@ -123,7 +115,7 @@ function createEditFormTypeTemplate(pointType, type) {
 }
 
 function createEditFormTypesTemplate(pointType) {
-  const typeTemplate = Object.values(POINT_TYPE)
+  const typeTemplate = Object.values(PointType)
     .map((type) => createEditFormTypeTemplate(pointType, type))
     .join('');
 
@@ -175,12 +167,10 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               type="checkbox"
               ${isDisabled ? 'disabled' : ''}
             >
-
             <div class="event__type-list">
               ${createEditFormTypesTemplate(type)}
             </div>
           </div>
-
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
               ${type}
@@ -198,7 +188,6 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               ${createEditFormDestinationTemplate(allDestinations)}
             </datalist>
           </div>
-
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
             <input id="event-start-time-1"
@@ -220,7 +209,6 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
-
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
@@ -236,12 +224,10 @@ function createEditFormTemplate(point, allOffers, allDestinations) {
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
-
           ${createEditFormButtonsTemplate(id === BLANK_POINT_ID, isDisabled, isSaving, isDeleting)}
         </header>
         <section class="event__details">
           ${createEditFormOffersTemplate(allOffers, offers, type, isDisabled)}
-
           ${createEditFormDestinationDescTemplate(pointDestination)}
         </section>
       </form>
@@ -326,7 +312,7 @@ export default class EditFormView extends AbstractStatefulView {
     const newType = evt.target.dataset.type;
     this.updateElement({
       type: newType,
-      offers: [],
+      offers: []
     });
   };
 
@@ -338,7 +324,7 @@ export default class EditFormView extends AbstractStatefulView {
       return;
     }
     this.updateElement({
-      destination: newDestination.id,
+      destination: newDestination.id
     });
   };
 
@@ -347,7 +333,7 @@ export default class EditFormView extends AbstractStatefulView {
     const choosenOffers = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
     const offersId = choosenOffers.map((offer) => offer.dataset.offerId);
     this._setState({
-      offers: offersId,
+      offers: offersId
     });
   };
 
@@ -355,7 +341,7 @@ export default class EditFormView extends AbstractStatefulView {
     evt.preventDefault();
     const newPrice = evt.target.value;
     this._setState({
-      basePrice: newPrice,
+      basePrice: newPrice
     });
   };
 
@@ -366,14 +352,14 @@ export default class EditFormView extends AbstractStatefulView {
 
   #dateFromChangeHandler = ([userDate]) => {
     this._setState({
-      dateFrom: userDate,
+      dateFrom: userDate
     });
     this.#datepickerTo.set('minDate', this._state.dateFrom);
   };
 
   #dateToChangeHandler = ([userDate]) => {
     this._setState({
-      dateTo: userDate,
+      dateTo: userDate
     });
     this.#datepickerFrom.set('maxDate', this._state.dateTo);
   };
