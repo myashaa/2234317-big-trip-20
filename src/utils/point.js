@@ -11,7 +11,8 @@ function getDestinationByName(allDestinations, pointDestination) {
 }
 
 function getOffers(allOffers, pointType) {
-  return allOffers.find((item) => item.type === pointType).offers;
+  const pointOffers = allOffers.find((item) => item.type === pointType);
+  return (pointOffers) ? pointOffers.offers : [];
 }
 
 export {

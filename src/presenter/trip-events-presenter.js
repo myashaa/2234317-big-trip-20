@@ -2,6 +2,7 @@ import SortView from '../view/sort-view.js';
 import ListView from '../view/list-view.js';
 import NoPointView from '../view/no-point-view.js';
 import LoadingView from '../view/loading-view.js';
+import ErrorMessageView from '../view/error-message-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
@@ -31,6 +32,7 @@ export default class TripEventsPresenter {
   #currentSortType = SortType.DAY.NAME;
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
+  #isError = false;
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
@@ -40,6 +42,7 @@ export default class TripEventsPresenter {
   #sortComponent = null;
   #noPointComponent = null;
   #loadingComponent = new LoadingView();
+  #errorMessageComponent = new ErrorMessageView();
 
   constructor({tripContainer, pointsModel, offersModel, destinationsModel, filterModel, onNewPointDestroy}) {
     this.#tripContainer = tripContainer;
@@ -80,6 +83,11 @@ export default class TripEventsPresenter {
   }
 
   #renderRouteSheet() {
+    if (this.#isError) {
+      this.#renderErrorMessage();
+      return;
+    }
+
     if (this.#isLoading) {
       this.#renderLoading();
       return;
@@ -102,6 +110,7 @@ export default class TripEventsPresenter {
 
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
+    remove(this.#errorMessageComponent);
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
@@ -114,6 +123,10 @@ export default class TripEventsPresenter {
 
   #renderLoading() {
     render(this.#loadingComponent, this.#tripContainer);
+  }
+
+  #renderErrorMessage() {
+    render(this.#errorMessageComponent, this.#tripContainer);
   }
 
   #renderSort() {
@@ -202,6 +215,11 @@ export default class TripEventsPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
+        if (data.isError) {
+          this.#isError = true;
+        } else {
+          this.#isError = false;
+        }
         this.#renderRouteSheet();
         break;
     }

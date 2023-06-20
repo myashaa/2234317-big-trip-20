@@ -51,8 +51,6 @@ export default class PointsApiService extends ApiService {
       'is_favorite': point.isFavorite
     };
 
-    adaptedPoint.offers = point.offers.slice().map((offer) => (offer.id) ? offer.id : offer);
-
     delete adaptedPoint.basePrice;
     delete adaptedPoint.dateFrom;
     delete adaptedPoint.dateTo;
