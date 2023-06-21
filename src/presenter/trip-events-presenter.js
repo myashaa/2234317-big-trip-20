@@ -94,6 +94,7 @@ export default class TripEventsPresenter {
     }
 
     if (this.points.length === 0) {
+      this.#renderList();
       this.#renderNoPoint();
       return;
     }

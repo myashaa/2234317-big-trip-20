@@ -315,12 +315,17 @@ main {
   margin-bottom: 8px; }
 
 .trip-events__msg {
+  position: absolute;
+  top: 260px;
+  left: 50%;
+  width: 100%;
   margin: 0;
-  margin-top: 280px;
   font-weight: 500;
   font-size: 44px;
   line-height: 60px;
   text-align: center;
+  transform: translate(-50%, 0);
+  z-index: -1;
   opacity: 0.89; }
   .trip-events__msg--hidden {
     display: none; }

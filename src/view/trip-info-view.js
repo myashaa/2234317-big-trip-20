@@ -21,9 +21,10 @@ function getTripPoints(points, destinations) {
   }
 
   let tripPoints = '';
-  for (let i = 0; i < POINT_COUNT_IN_ROUTE; i++) {
-    if (i === POINT_COUNT_IN_ROUTE - 1) {
+  for (let i = 0; i < points.length; i++) {
+    if (i === points.length - 1) {
       tripPoints = `${tripPoints}${getPointDestination(destinations, points[i])}`;
+      return tripPoints;
     }
     tripPoints = `${tripPoints}${getPointDestination(destinations, points[i])} &mdash; `;
   }
