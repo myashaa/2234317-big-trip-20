@@ -1,4 +1,4 @@
-# Проект «Большое путешествие»
+# Личный проект «Большое путешествие»
 
 * Студент: [Мария Усынина](https://up.htmlacademy.ru/ecmascript/20/user/2234317).
 * Наставник: [Нияз Гарипов](https://htmlacademy.ru/profile/niyaz).
@@ -50,3 +50,8 @@ git clone SSH-адрес_вашего_форка
 
 [check-image]: https://github.com/htmlacademy-ecmascript/2234317-big-trip-20/workflows/Project%20check/badge.svg?branch=master
 [check-url]: https://github.com/htmlacademy-ecmascript/2234317-big-trip-20/actions
+
+---
+
+Курс пройден:
+- [JavaScript. Архитектура клиентских приложений](https://github.com/myashaa/2234317-big-trip-20/files/11859221/2234317.pdf)
